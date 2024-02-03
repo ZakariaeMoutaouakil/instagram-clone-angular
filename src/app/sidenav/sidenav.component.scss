@@ -1,0 +1,49 @@
+.header {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0 5%;
+  //border-width: 0.01em;
+  border-right: solid;
+  border-color: lighten(grey, 40%);
+  height: 100vh;
+}
+
+.header button {
+  margin: 3% 7%;
+  opacity: 50%;
+  display: flex;
+  justify-content: left;
+
+  &:hover {
+    scale: 107%;
+    opacity: 100%;
+
+    mat-icon {
+      scale: 110%;
+    }
+  }
+}
+
+.header p {
+  margin-top: 10%;
+  margin-bottom: 25%;
+}
+
+a {
+  margin-top: 10%;
+  margin-bottom: 25%;
+}
+
+.logo {
+  //border: solid red;
+  height: 4em;
+  background-image: url("https://i.pinimg.com/originals/ac/76/72/ac76724616bde8c8749f73c1d07ee255.png");
+  background-position: center;
+  background-repeat: no-repeat;
+
+  &:hover {
+    opacity: 60%;
+  }
+}
