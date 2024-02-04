@@ -1,0 +1,66 @@
+.profile {
+  margin-top: 2%;
+  margin-right: 20%;
+  margin-left: 10%;
+  display: grid;
+  grid-template-columns: 30% 70%;
+}
+
+.info {
+  display: grid;
+  grid-template-rows: repeat(3, auto);
+}
+
+p {
+  display: inline-block;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  align-items: center;
+
+  .checkmark {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  button {
+    margin-left: 10%;
+  }
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  margin-right: 0;
+
+  .middle {
+    text-align: center;
+  }
+
+  .last {
+    text-align: right;
+    margin-right: 1%;
+  }
+}
+
+.image {
+  .border {
+    //border: solid red;
+    border-radius: 50%;
+    height: 200px;
+    width: 200px;
+    //height: 100%;
+    //width: 100%;
+    overflow: clip;
+    position: relative;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+    }
+  }
+}

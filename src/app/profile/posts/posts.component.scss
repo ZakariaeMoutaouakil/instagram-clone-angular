@@ -1,0 +1,34 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 2em 2em;
+  grid-gap: 1em;
+  width: 1000px;
+}
+
+.image {
+  position: relative;
+  height: 200px;
+  border-radius: 0.5em;
+  overflow: clip;
+  filter: grayscale(60%);
+
+  display: flex;
+  justify-content: center;
+
+  &:hover {
+    opacity: 60%;
+
+    .stats {
+      position: absolute;
+      top: 35%;
+      right: 30%;
+    }
+  }
+
+  img {
+    object-fit: cover;
+    scale: 120%;
+  }
+}
+
