@@ -4,6 +4,12 @@ export type Post = {
   commentCounts: number
 }
 
+export type PostsMetadata = {
+  pageNumber: number
+  totalPages: number
+}
+
 export interface PostsState {
   posts: Post[]
+  metadata: PostsMetadata
 }

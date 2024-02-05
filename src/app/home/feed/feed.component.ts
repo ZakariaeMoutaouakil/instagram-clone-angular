@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   MatCard,
   MatCardActions, MatCardAvatar,
@@ -31,6 +31,13 @@ import {RouterLink} from "@angular/router";
   templateUrl: './feed.component.html',
   styleUrl: './feed.component.scss'
 })
-export class FeedComponent {
+export class FeedComponent implements OnInit{
+    ngOnInit(): void {
+      window.onscroll = function(ev) {
+        if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+          console.log("you're at the bottom of the page");
+        }
+      };
+    }
 
 }

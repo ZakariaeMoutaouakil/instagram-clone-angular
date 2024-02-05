@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AsyncPipe, NgOptimizedImage} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
 import {PostsStore} from "./store/posts.store";
 import {ActivatedRoute} from "@angular/router";
-import {map, tap} from "rxjs";
+import {fromEvent, interval, Subscription, tap} from "rxjs";
 
 @Component({
   selector: 'app-posts',
@@ -17,20 +17,56 @@ import {map, tap} from "rxjs";
   styleUrl: './posts.component.scss',
   providers: [PostsStore]
 })
-export class PostsComponent implements OnInit {
+export class PostsComponent implements OnInit, OnDestroy {
   posts$ = this.postsStore.posts$;
+  pageNumber$ = this.postsStore.pageNumber$;
+  totalPages$ = this.postsStore.totalPages$;
+  username: string = this.activatedRoute.snapshot.params["username"];
+  reachBottom = fromEvent(window, 'Reached bottom')
+    .pipe(tap(ev => {
+      console.log("Reached bottom event " + ev + this.pageNumber$())
+      if (this.pageNumber$() < this.totalPages$()) {
+        this.postsStore.getPosts({username: this.username, pageNumber: this.pageNumber$()})
+      }
+    }));
+  postsSubscription: Subscription | undefined;
+  bottomSubscription: Subscription | undefined;
+  scrollSubscription: Subscription | undefined;
+  interval$ = interval(1000).pipe(
+    tap(time =>
+    {
+      const div = document.querySelector("body")!;
+      const verticalScroll = div.scrollHeight > div.clientHeight;
+      if (!verticalScroll && this.pageNumber$() < this.totalPages$()) {
+        this.postsStore.getPosts({username: this.username, pageNumber: this.pageNumber$()})
+      } else {
+        this.scrollSubscription?.unsubscribe()
+        console.log("scrollSubscription unsubscribed "+time)
+      }
+    })
+  );
+
   constructor(private readonly postsStore: PostsStore,
               private activatedRoute: ActivatedRoute) {
-    this.activatedRoute.params.pipe(
-      map((p) => p['username'] as string),
-      tap(username => {
-        this.postsStore.getPosts(username)
-      })
-    ).subscribe();
+    this.postsStore.getTotalPages(this.username);
     // document.querySelector( ":hover" );
   }
 
+  ngOnDestroy(): void {
+    this.postsSubscription?.unsubscribe()
+    this.bottomSubscription?.unsubscribe()
+    this.scrollSubscription?.unsubscribe()
+  }
+
   ngOnInit(): void {
-    this.posts$.subscribe();
+    this.postsSubscription = this.posts$.subscribe();
+    this.bottomSubscription = this.reachBottom.subscribe();
+    this.scrollSubscription = this.interval$.subscribe();
+    onscroll = function (ev) {
+      if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+        console.log("you're at the bottom of the page " + ev);
+        window.dispatchEvent(new Event("Reached bottom"))
+      }
+    };
   }
 }
