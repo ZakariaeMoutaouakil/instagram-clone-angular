@@ -1,17 +1,26 @@
 <div class="profile">
   <div class="image">
     <div class="border">
-      <img alt="photo"
-           fill
-           ngSrc="{{ (PersonState$|async)?.info!.photo }}"
-      >
+      @if((PersonState$|async)!.info.photo===""){
+        <img alt="photo"
+             fill
+             ngSrc="{{defaultPhoto}}"
+             priority
+        >
+      } @else {
+        <img alt="photo"
+             fill
+             ngSrc="{{ (PersonState$|async)!.info.photo }}"
+             priority
+        >
+      }
     </div>
   </div>
   <div class="info">
     <div class="header">
       <div class="checkmark">
-        <p style="margin-right: 2%; font-weight: bold">{{ (PersonState$|async)?.info!.username }}</p>
-        @if ((PersonState$|async)?.info!.validated) {
+        <p style="margin-right: 2%; font-weight: bold">{{ (PersonState$|async)!.info.username }}</p>
+        @if ((PersonState$|async)!.info.validated) {
           <mat-icon color="accent">check_circle</mat-icon>
         }
       </div>
@@ -21,20 +30,20 @@
     </div>
     <div class="stats">
       <div>
-        <p><span style="font-weight: bold">{{ (PersonState$|async)?.stats!.posts }}</span> posts</p>
+        <p><span style="font-weight: bold">{{ (PersonState$|async)!.stats.posts }}</span> posts</p>
       </div>
       <div class="middle">
-        <p><span style="font-weight: bold">{{ (PersonState$|async)?.stats!.followers }}</span> followers</p>
+        <p><span style="font-weight: bold">{{ (PersonState$|async)!.stats.followers }}</span> followers</p>
       </div>
       <div class="last">
-        <p><span style="font-weight: bold">{{ (PersonState$|async)?.stats!.followings }}</span> following</p>
+        <p><span style="font-weight: bold">{{ (PersonState$|async)!.stats.followings }}</span> following</p>
       </div>
     </div>
     <div class="bio">
       <p
-        style="font-weight: bold">{{ (PersonState$|async)?.info!.firstname }} {{ (PersonState$|async)?.info!.lastname }}</p>
+        style="font-weight: bold">{{ (PersonState$|async)!.info.firstname }} {{ (PersonState$|async)!.info.lastname }}</p>
       <br>
-      <p>{{ (PersonState$|async)?.info!.bio }}</p>
+      <p>{{ (PersonState$|async)!.info.bio }}</p>
     </div>
   </div>
 </div>

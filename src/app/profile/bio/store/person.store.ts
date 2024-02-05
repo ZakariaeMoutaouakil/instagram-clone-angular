@@ -1,6 +1,6 @@
 import {ComponentStore, tapResponse} from "@ngrx/component-store";
 import {Injectable} from "@angular/core";
-import {info, PersonState, stats} from "./person-state";
+import {info, PersonState, stats} from "./person.state";
 import {Observable, switchMap} from "rxjs";
 import {PersonService} from "./person.service";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -23,18 +23,26 @@ export class PersonStore extends ComponentStore<PersonState> {
   readonly getInfo = this.effect((username$: Observable<string>) => {
     return username$.pipe(switchMap((username) => this.personService.getInfo(username).pipe(
       tapResponse((info) => {
-        this.addInfo(info)
+        if(!!info){
+          this.addInfo(info)
+        }
         console.log(info)
       }, (error: HttpErrorResponse) => {
+        console.log("httperror")
+        console.log(error)
     },))))
-  })
+  });
 
   readonly getStats = this.effect((username$: Observable<string>) => {
     return username$.pipe(switchMap((username) => this.personService.getStats(username).pipe(
       tapResponse((stats) => {
-        this.addStats(stats)
+        if(!!stats) {
+          this.addStats(stats)
+        }
         console.log(stats)
       }, (error: HttpErrorResponse) => {
+        console.log("httperror")
+        console.log(error)
     },))))
   })
 

@@ -21,7 +21,7 @@ import { map, Subscription, tap} from "rxjs";
 })
 export class BioComponent implements OnInit{
   PersonState$ = this.personStore.PersonState$;
-  // paramsSubscription: Ob;
+  defaultPhoto = "https://img.freepik.com/free-photo/abstract-surface-textures-white-concrete-stone-wall_74190-8189.jpg?size=626&ext=jpg&ga=GA1.1.1448711260.1707048000&semt=sph";
   constructor(private readonly personStore: PersonStore,
               private activatedRoute: ActivatedRoute) {
     // this.paramsSubscription=
