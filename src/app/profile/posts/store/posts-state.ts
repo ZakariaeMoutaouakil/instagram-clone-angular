@@ -1,4 +1,5 @@
 export type Post = {
+  id: number
   image: string
   likesCount: number
   commentCounts: number

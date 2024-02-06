@@ -1,0 +1,86 @@
+<div class="container">
+  <div class="post">
+    <div class="image">
+      <img
+        alt="post"
+        fill
+        ngSrc="{{postState$().postInfo.image === ''? defaultPhoto : postState$().postInfo.image}}">
+    </div>
+    <div class="info">
+      <div class="up" style="align-self: flex-start; width: 100%">
+        <mat-card>
+          <mat-card-header>
+            <div class="avatar"
+                 mat-card-avatar
+                 style="background-image: url('{{postState$().postInfo.photo}}'); background-size: cover;">
+            </div>
+            <mat-card-title style="font-weight: bold"><a routerLink="/bob_jackson">{{ username }}</a></mat-card-title>
+            <mat-card-subtitle>{{ postState$().postInfo.timeUntilNow.toString() }} day ago</mat-card-subtitle>
+          </mat-card-header>
+        </mat-card>
+      </div>
+      <div class="down">
+        <div class="scroll">
+          <mat-card-content style="display: flex; justify-content: center; flex-direction: column">
+            <p>{{ postState$().postInfo.description }}</p>
+            <p style="color:blue;">#Angular</p>
+            <p style="color:blue;">#Java</p>
+            <p style="color:gray; margin: 5% 0; text-align: center">See comments</p>
+            @for (comment of postState$().comments; track $index){
+              <p><strong><a href="/{{comment.authorUsername}}">{{comment.authorUsername}}</a></strong>{{comment.comment}}</p>
+            }
+<!--            <p>-->
+<!--              <strong>The Shiba</strong> Inu is the smallest of the six original and distinct spitz breeds of dog from-->
+<!--              Japan.-->
+<!--              A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally-->
+<!--              bred for hunting.-->
+<!--            </p>-->
+<!--            <p>-->
+<!--              <strong>The Shiba</strong> Inu is the smallest of the six original and distinct spitz breeds of dog from-->
+<!--              Japan.-->
+<!--              A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally-->
+<!--              bred for hunting.-->
+<!--            </p>-->
+            <button color="primary" mat-button style="margin: 0 20%">Load more comments</button>
+          </mat-card-content>
+        </div>
+        <div class="end">
+          <mat-card-actions style="display: flex; justify-content: space-between">
+            <div class="left">
+              <button aria-label="" mat-icon-button>
+                <mat-icon>favorite</mat-icon>
+              </button>
+              <button aria-label="" mat-icon-button>
+                <mat-icon>share</mat-icon>
+              </button>
+            </div>
+            <button aria-label="" class="right" mat-icon-button>
+              <mat-icon>bookmark</mat-icon>
+            </button>
+          </mat-card-actions>
+          <mat-card-content class="stats">
+            <p>{{ postState$().postInfo.likesCount }} likes</p>
+            <p style="font-weight: lighter; color: gray">{{ postState$().postInfo.timeUntilNow.toString() }} days ago</p>
+          </mat-card-content>
+          <form class="comment" style="display: flex; justify-content: space-between; margin-left: 1%">
+            <mat-form-field appearance="outline" color="primary" style="width: 100%">
+              <input [formControl]="emailFormControl"
+                     matInput
+                     placeholder="Add comment"
+                     type="text">
+              <mat-hint>Type above to add a comment.</mat-hint>
+              @if (emailFormControl.hasError('required')) {
+                <mat-error>Comment cannot be <strong>empty!</strong></mat-error>
+              }
+            </mat-form-field>
+            <button aria-label="Submit"
+                    mat-icon-button
+                    type="submit">
+              <mat-icon>send</mat-icon>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,15 +1,17 @@
 <section class="posts" style="display:flex; justify-content: center">
   <div class="grid">
     @for (post of (posts$|async); track $index) {
-      <div class="image">
-        <img
-          alt="image"
-          fill
-          ngSrc="{{post.image}}">
-        <div class="stats">
-          <p>&#9829; {{post.likesCount}} 🗩 {{post.commentCounts}}</p>
+      <a routerLink="{{post.id}}">
+        <div class="image">
+          <img
+            alt="image"
+            fill
+            ngSrc="{{post.image}}">
+          <div class="stats">
+            <p style="color: black">&#9829; {{ post.likesCount }} 🗩 {{ post.commentCounts }}</p>
+          </div>
         </div>
-      </div>
+      </a>
     }
   </div>
 </section>

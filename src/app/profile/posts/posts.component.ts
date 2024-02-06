@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AsyncPipe, NgOptimizedImage} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
 import {PostsStore} from "./store/posts.store";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {fromEvent, interval, Subscription, tap} from "rxjs";
 
 @Component({
@@ -11,7 +11,8 @@ import {fromEvent, interval, Subscription, tap} from "rxjs";
   imports: [
     NgOptimizedImage,
     MatIcon,
-    AsyncPipe
+    AsyncPipe,
+    RouterLink
   ],
   templateUrl: './posts.component.html',
   styleUrl: './posts.component.scss',
@@ -22,7 +23,7 @@ export class PostsComponent implements OnInit, OnDestroy {
   pageNumber$ = this.postsStore.pageNumber$;
   totalPages$ = this.postsStore.totalPages$;
   username: string = this.activatedRoute.snapshot.params["username"];
-  reachBottom = fromEvent(window, 'Reached bottom')
+  reachBottom$ = fromEvent(window, 'Reached bottom')
     .pipe(tap(ev => {
       console.log("Reached bottom event " + ev + this.pageNumber$())
       if (this.pageNumber$() < this.totalPages$()) {
@@ -33,15 +34,14 @@ export class PostsComponent implements OnInit, OnDestroy {
   bottomSubscription: Subscription | undefined;
   scrollSubscription: Subscription | undefined;
   interval$ = interval(1000).pipe(
-    tap(time =>
-    {
+    tap(time => {
       const div = document.querySelector("body")!;
       const verticalScroll = div.scrollHeight > div.clientHeight;
       if (!verticalScroll && this.pageNumber$() < this.totalPages$()) {
         this.postsStore.getPosts({username: this.username, pageNumber: this.pageNumber$()})
       } else {
         this.scrollSubscription?.unsubscribe()
-        console.log("scrollSubscription unsubscribed "+time)
+        console.log("scrollSubscription unsubscribed " + time)
       }
     })
   );
@@ -60,7 +60,7 @@ export class PostsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.postsSubscription = this.posts$.subscribe();
-    this.bottomSubscription = this.reachBottom.subscribe();
+    this.bottomSubscription = this.reachBottom$.subscribe();
     this.scrollSubscription = this.interval$.subscribe();
     onscroll = function (ev) {
       if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
