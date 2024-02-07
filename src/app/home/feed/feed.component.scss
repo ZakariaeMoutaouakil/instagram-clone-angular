@@ -1,75 +1,11 @@
-.feed{
-  margin: 5% 20%;
-}
-
-.post{
-  //border: solid red;
-  box-shadow: 0.1em 0.1em 1em lighten(grey,40%);
-  padding: 0 2%;
-  border-radius: 1em;
-}
-.header{
-  display: grid;
-  grid-template-rows: 100%;
-  grid-template-columns: repeat(4,auto) 60% auto;
-  align-items: center;
-  //padding-right: 0;
-  padding-left: 2%;
-  //margin-right: 0;
-  //align-content: center;
-  //justify-items: center;
-  //justify-self: center;
-  //justify-content: center;
-  #creator{
-    margin-left: 0.4em;
-  }
-  p{
-    margin-right: 0.4em;
-    //margin: 0 0.4em;
-  }
-  .miniature{
-    //margin-right: 35%;
-    height: 20px;
-    width: 20px;
-    //border: solid red;
-    border-radius: 50%;
-    overflow: clip;
-    display: flex;
-    justify-content: center;
-    img{
-      //max-height: 100%;
-    }
-    //width: ;
-    //background-image: url("https://img.freepik.com/free-vector/twitter-new-2023-x-logo-white-background-vector_1017-45422.jpg");
-    //background-position: center;
-    //background-clip: border-box;
-    //background-size: contain;
-  }
-  button{
-    //padding-right: 10em;
-  }
-}
 .example-header-image {
   background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
   background-size: cover;
-  height: 20px;
-  width: 20px;
 }
-.image{
-  // background-image: url("https://material.angular.io/assets/img/examples/shiba2.jpg");
-  //height: auto;
-  //background-repeat: no-repeat;
-  //background-position: center;
-  //border: solid blue;
-  border-radius: 1em;
-  height: auto;
-  overflow: hidden;
-  img{
-    box-shadow: 0.1em 0.1em 1em rgb(0 0 0 / 10%);
-    width: 100%;
-  }
-}
-.actions{
+
+.feed {
   display: grid;
-  grid-template-columns: repeat(2,1fr) 5fr 1fr;
+  grid-template-columns: 100%;
+  justify-items: center;
+  margin: 5%;
 }

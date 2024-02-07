@@ -28,6 +28,8 @@ export class PostsComponent implements OnInit, OnDestroy {
       console.log("Reached bottom event " + ev + this.pageNumber$())
       if (this.pageNumber$() < this.totalPages$()) {
         this.postsStore.getPosts({username: this.username, pageNumber: this.pageNumber$()})
+      } else {
+        this.bottomSubscription?.unsubscribe()
       }
     }));
   postsSubscription: Subscription | undefined;

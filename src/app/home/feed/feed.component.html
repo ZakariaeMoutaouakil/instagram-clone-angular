@@ -1,42 +1,53 @@
-<div class="feed">
-  <div class="post">
-    <div class="header">
-      <div class="miniature">
-        <img src="https://hd.wallpaperswide.com/thumbs/apple_on_black_background-t2.jpg">
-      </div>
-      <p id="creator"><a routerLink="/username">therock</a></p>
-      <p style="color: gray">•</p>
-      <p style="color: gray">1d</p>
-      <p></p>
-      <button aria-label="menu" mat-icon-button>
-        <mat-icon>more_horiz</mat-icon>
-      </button>
-    </div>
-    <div class="image">
-      <img alt="Photo of a Shiba Inu" mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg">
-    </div>
-    <div class="actions">
-      <button aria-label="" mat-icon-button>
-        <mat-icon>favorite</mat-icon>
-      </button>
-      <button aria-label="" mat-icon-button>
-        <mat-icon>share</mat-icon>
-      </button>
-      <span></span>
-      <button aria-label="" mat-icon-button>
-        <mat-icon>bookmark</mat-icon>
-      </button>
-    </div>
-    <div class="likes">
-      <p style="font-weight: bold; margin: 2% 0">644,900 likes</p>
-    </div>
-    <div class="desc">
-      <a routerLink="/username">therock</a>
-      My honor to join TKOGrp Board of Directors
-      (who owns wwe & ufc)
-    </div>
-    <div class="commets">
-      <p style="color: gray; font-weight: lighter;padding-bottom: 2%">View all 7,233 comments</p>
-    </div>
-  </div>
-</div>
+<section class="feed">
+  @for (post of feedState$().posts; track $index) {
+    <mat-card style="width: 80%; margin-bottom: 5%">
+      <mat-card-header>
+        <div style="background-image: url('{{post.uploaderPhoto}}');
+  background-size: cover;"
+             mat-card-avatar></div>
+        <mat-card-title>
+          <a routerLink="{{post.uploaderUsername}}" style="color: black;text-decoration: none; font-weight: bold">
+            {{post.uploaderUsername}}
+          </a>
+        </mat-card-title>
+        <mat-card-subtitle>{{ post.timeUntilNow }} days ago</mat-card-subtitle>
+      </mat-card-header>
+      <img alt="profile pic" mat-card-image src="{{post.image}}">
+      <mat-card-actions style="display:flex; flex-direction: row; justify-content: space-between">
+        <div>
+          <button aria-label="favorite" mat-icon-button>
+            <mat-icon>favorite</mat-icon>
+          </button>
+          <button aria-label="share" mat-icon-button>
+            <mat-icon>share</mat-icon>
+          </button>
+        </div>
+        <button aria-label="bookmark" mat-icon-button>
+          <mat-icon>bookmark</mat-icon>
+        </button>
+      </mat-card-actions>
+      <mat-card-content>
+        <strong>{{ post.likesCount }} likes</strong>
+        <p style="margin-top: 1%; margin-bottom: 2%">
+          <strong style="margin-right: 1%;">
+            <a routerLink="{{post.uploaderUsername}}" style="color: black;text-decoration: none; font-weight: bold">
+              {{ post.uploaderUsername }}
+            </a>
+            @if (post.uploaderValidated) {
+              ☑️
+            }
+          </strong>
+          {{ post.description }}
+        </p>
+        <a style="text-decoration: none" [routerLink]="[post.uploaderUsername,post.id]">
+          <p style="color: gray; font-weight: lighter;margin: 0">
+            View all {{post.commentCounts}} comments
+          </p>
+        </a>
+      </mat-card-content>
+    </mat-card>
+  }
+  @if(feedState$().last){
+    <p>There are no more posts. Please come back again after some time.</p>
+  }
+</section>

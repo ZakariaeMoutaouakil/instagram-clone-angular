@@ -16,6 +16,7 @@ export type PostInfo = {
   description: string
   image: string
   photo: string
+  hashtags: string[]
 }
 
 export type PostState = {

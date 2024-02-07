@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {map, Observable} from "rxjs";
-import {Comment, CommentMetadata, PostInfo} from "./post-state.store";
+import {Comment, PostInfo} from "./post-state.store";
 
 @Injectable({
   providedIn: 'root'
@@ -25,15 +25,16 @@ export class PostService {
       .get<any>(`http://localhost:8080/posts/${postId}?pageNumber=0`)
       .pipe(
         map(response => {
-          return {
+            return {
               postInfo: {
                 timeUntilNow: response.timeUntilNow as number,
                 likesCount: response.likesCount as number,
                 description: response.description as string,
                 image: response.image as string,
-                photo: response.photo as string
+                photo: response.photo as string,
+                hashtags: response.hashtags as string[]
               },
-                totalPages: response.comments.content.totalPages as number
+              totalPages: response.comments.totalPages as number
             };
           }
         ))

@@ -62,7 +62,11 @@ export class PostStore extends ComponentStore<PostState> {
       switchMap((params) =>
         this.postService.getComments(params.postId, params.pageNumber).pipe(
           tapResponse(
-            (comments) => this.addComments(comments),
+            (comments) => {
+              if (!!comments && (comments.length > 0)) {
+                this.addComments(comments)
+              }
+            },
             (error: HttpErrorResponse) => console.log(error),
           ),
         )),
@@ -76,7 +80,8 @@ export class PostStore extends ComponentStore<PostState> {
         likesCount: 0,
         description: "",
         image: "",
-        photo: ""
+        photo: "",
+        hashtags: []
       },
       comments: [],
       commentMetadata: {
