@@ -8,19 +8,19 @@ export const PROTECTED_ROUTES: Routes = [
   {
     path: "",
     component: ProtectedComponent,
-    children:[
+    children: [
       {
         path: "",
         component: HomeComponent,
       },
+      {
+        path: ":username",
+        component: ProfileComponent
+      },
+      {
+        path: ":username/:postId",
+        component: PostComponent
+      }
     ]
-  },
-  {
-    path: ":username",
-    component: ProfileComponent
-  },
-  {
-    path: ":username/:postId",
-    component: PostComponent
   }
 ];

@@ -1,7 +1,7 @@
 import {ComponentStore, tapResponse} from "@ngrx/component-store";
 import {Injectable, Signal} from "@angular/core";
 import {Post, PostsState} from "./posts-state";
-import {Observable, switchMap, tap} from "rxjs";
+import {Observable, switchMap} from "rxjs";
 import {HttpErrorResponse} from "@angular/common/http";
 import {PostsService} from "./posts.service";
 
