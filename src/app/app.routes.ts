@@ -1,24 +1,18 @@
-import { Routes } from '@angular/router';
-import {ProfileComponent} from "./profile/profile.component";
-import {HomeComponent} from "./home/home.component";
-import {PostComponent} from "./post/post.component";
+import {Routes} from '@angular/router';
 import {LoginComponent} from "./auth/login/login.component";
+import {RegisterComponent} from "./auth/register/register.component";
 
 export const routes: Routes = [
-  {
-    path: "",
-    component: HomeComponent
-  },
   {
     path: "login",
     component: LoginComponent
   },
   {
-    path: ":username",
-    component: ProfileComponent
+    path: "register",
+    component: RegisterComponent
   },
   {
-    path: ":username/:postId",
-    component: PostComponent
-  }
+    path: "",
+    loadChildren: () => import('./protected/protected.routes').then(mod => mod.PROTECTED_ROUTES)
+  },
 ];
