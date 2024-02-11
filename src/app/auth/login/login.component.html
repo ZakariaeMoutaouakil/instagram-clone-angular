@@ -22,21 +22,19 @@
       <form (ngSubmit)="OnSubmit()"
             [formGroup]="signIn"
             style="display: flex; justify-content: center; flex-direction: column; width: 100%;">
-        <p style="align-self: center">Your Email:</p>
+        <p style="align-self: center">Your Username:</p>
         <mat-form-field style="align-self: center;">
-          <mat-label>Email</mat-label>
-          <input formControlName="email" matInput placeholder="Email*" type="email">
-          @if (emailFormControl.hasError('required')) {
-            <mat-error>Email is <strong>required!</strong></mat-error>
-          } @else if (emailFormControl.hasError('email')) {
-            <mat-error>Please enter a valid email address.</mat-error>
+          <mat-label>Username</mat-label>
+          <input formControlName="username" matInput placeholder="Username*">
+          @if (usernameFormControl.hasError('required')) {
+            <mat-error>Username is <strong>required!</strong></mat-error>
           }
         </mat-form-field>
         <br>
         <p style="align-self: center">Your Password:</p>
         <mat-form-field style="align-self: center;">
           <mat-label>Password</mat-label>
-          <input formControlName="password" matInput placeholder="Password*" type="email">
+          <input formControlName="password" matInput placeholder="Password*">
           @if (passwordFormControl.hasError('required')) {
             <mat-error>Password is <strong>required!</strong></mat-error>
           } @else if (passwordFormControl.hasError('minlength')) {
@@ -45,7 +43,7 @@
         </mat-form-field>
         <button [disabled]="!signIn.valid"
                 mat-raised-button
-                style="max-width: 50%; align-self: center"
+                style="max-width: 50%; align-self: center; margin-top: 5%"
                 type="submit">Submit
         </button>
       </form>

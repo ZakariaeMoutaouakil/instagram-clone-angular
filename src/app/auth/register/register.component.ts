@@ -29,33 +29,35 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class RegisterComponent {
   emailFormControl = new FormControl('', [Validators.required, Validators.email])
-  firstNameFormControl=new FormControl('', [Validators.required])
-  lastNameFormControl=new FormControl('', [Validators.required])
-  userNameFormControl=new FormControl('', [Validators.required])
-  passwordFormControl=new FormControl('', [Validators.required])
+  firstNameFormControl = new FormControl('', [Validators.required])
+  lastNameFormControl = new FormControl('', [Validators.required])
+  userNameFormControl = new FormControl('', [Validators.required])
+  passwordFormControl = new FormControl('', [Validators.required])
 
 
   signUp = new FormGroup({
     'firstname': this.firstNameFormControl,
     'lastname': this.lastNameFormControl,
-    'email' : this.emailFormControl,
+    'email': this.emailFormControl,
     'username': this.userNameFormControl,
     'password': this.passwordFormControl,
   })
 
-  constructor(private readonly httpClient:HttpClient,
+  constructor(private readonly httpClient: HttpClient,
               private readonly _snackBar: MatSnackBar,
-              private readonly router:Router) {
+              private readonly router: Router) {
   }
 
   OnSubmit() {
     console.log(this.signUp)
-    this.httpClient.post('http://localhost:8080/persons/register',this.signUp.value).subscribe({
+    this.httpClient.post('http://localhost:8080/persons/register', this.signUp.value).subscribe(
+      {
         next: () => {
-
           this.router.navigate(["/"])
         },
-        error: () => this._snackBar.open("Your authentification failed. Please retry with different credentials","Retry"),
+        error: () => {
+          this._snackBar.open("Your authentification failed. Please retry with different credentials", "Retry")
+        },
       }
     )
   }
