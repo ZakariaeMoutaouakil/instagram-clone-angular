@@ -49,11 +49,15 @@ export class RegisterComponent {
   }
 
   OnSubmit() {
-    console.log(this.signUp)
     this.httpClient.post('http://localhost:8080/persons/register', this.signUp.value).subscribe(
       {
         next: () => {
-          this.router.navigate(["/"])
+          this._snackBar.open("Your registration has succeeded. You will be redirected soon to the login page.","Got it")
+          setTimeout(
+            ()=>{
+              this.router.navigate(["/login"])
+            },2000
+          )
         },
         error: () => {
           this._snackBar.open("Your authentification failed. Please retry with different credentials", "Retry")

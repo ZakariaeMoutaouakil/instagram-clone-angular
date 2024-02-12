@@ -6,9 +6,8 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {MatInput} from "@angular/material/input";
 import {Router, RouterLink} from "@angular/router";
 import {MatButton} from "@angular/material/button";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {catchError, throwError} from "rxjs";
+import {LoginService} from "../service/login/login.service";
 
 @Component({
   selector: 'app-login',
@@ -34,7 +33,7 @@ export class LoginComponent implements OnInit {
   usernameFormControl: FormControl<string | null>;
   passwordFormControl: FormControl<string | null>;
 
-  constructor(private readonly httpClient: HttpClient,
+  constructor(private readonly loginService: LoginService,
               private readonly _snackBar: MatSnackBar,
               private readonly router: Router) {
     this.usernameFormControl = new FormControl('', [Validators.required]);
@@ -50,29 +49,19 @@ export class LoginComponent implements OnInit {
   }
 
   OnSubmit() {
-    // console.log(this.signIn)
-    console.log("errors")
-    console.log(this.signIn.valid)
-
-    const headers: HttpHeaders = new HttpHeaders({
-      'Authorization': 'Basic ' + btoa(this.signIn.value.username + ':' + this.signIn.value.password),
-    })
-
-    this.httpClient.get("http://localhost:8080/login", {headers})
-      .pipe(
-        catchError(error => {
-          return throwError(error);
-        })
-      )
-      .subscribe(
-        res => {
-          console.log(res)
-          this.router.navigate(["/"])
+    this.loginService.login(this.signIn.value.username, this.signIn.value.password).subscribe({
+        next: () => {
+          this._snackBar.open("Your authentication has succeeded. You will be redirected soon to the home page.","Got it")
+          setTimeout(
+            ()=>{
+              this.router.navigate(["/"])
+            },2000
+          )
         },
-        error => {
-          console.error('Authentication failed:', error)
+        error: () => {
           this._snackBar.open('Authentication failed. Please check your credentials and try again.', 'Close');
         }
-      )
+      }
+    )
   }
 }
