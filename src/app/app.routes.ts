@@ -1,6 +1,7 @@
 import {Routes} from '@angular/router';
 import {LoginComponent} from "./auth/login/login.component";
 import {RegisterComponent} from "./auth/register/register.component";
+import {authGuard} from "./auth/service/guard/auth.guard";
 
 export const routes: Routes = [
   {
@@ -13,6 +14,7 @@ export const routes: Routes = [
   },
   {
     path: "",
-    loadChildren: () => import('./protected/protected.routes').then(mod => mod.PROTECTED_ROUTES)
+    loadChildren: () => import('./protected/protected.routes').then(mod => mod.PROTECTED_ROUTES),
+    canActivateChild: [authGuard]
   },
 ];

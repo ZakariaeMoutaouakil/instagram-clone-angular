@@ -7,16 +7,11 @@ import {catchError, throwError} from "rxjs";
 })
 export class LoginService {
 
-  constructor(private http: HttpClient) {
+  constructor(private readonly httpClient: HttpClient) {
   }
 
   preflight(){
-    return this.http.get<JSON>('http://localhost:8080/login').pipe(
-      catchError(error => {
-        // Handle authentication error here
-        return throwError(() => error);
-      })
-    )
+    return this.httpClient.get<any>('http://localhost:8080/test')
   }
 
   login(username: string, password: string) {
@@ -24,11 +19,12 @@ export class LoginService {
       'Authorization': 'Basic ' + btoa(username + ':' + password)
     });
 
-    return this.http.get<JSON>('http://localhost:8080/login', {headers}).pipe(
+    return this.httpClient.get<JSON>('http://localhost:8080/login', {headers}).pipe(
       catchError(error => {
         // Handle authentication error here
         return throwError(() => error);
       })
     )
   }
+
 }

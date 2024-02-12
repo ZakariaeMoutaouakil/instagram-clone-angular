@@ -45,17 +45,32 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.signIn)
+    console.log("login ngOnInit:")
+    if (!localStorage.getItem(btoa("authenticated"))) {
+      this.loginService.preflight().subscribe({
+        next: () => {
+          localStorage.setItem(btoa("authenticated"), btoa("true"))
+          this.router.navigate(["/"])
+        },
+        error: () => {
+        }
+      })
+    }
   }
 
   OnSubmit() {
     this.loginService.login(this.signIn.value.username, this.signIn.value.password).subscribe({
         next: () => {
-          this._snackBar.open("Your authentication has succeeded. You will be redirected soon to the home page.","Got it")
+          localStorage.setItem(btoa("authenticated"), btoa("true"))
+          this._snackBar.open(
+            "Your authentication has succeeded. You will be redirected soon to the home page.",
+            "Got it",{
+            duration: 2000
+          })
           setTimeout(
-            ()=>{
+            () => {
               this.router.navigate(["/"])
-            },2000
+            }, 2000
           )
         },
         error: () => {

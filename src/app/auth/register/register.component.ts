@@ -52,7 +52,11 @@ export class RegisterComponent {
     this.httpClient.post('http://localhost:8080/persons/register', this.signUp.value).subscribe(
       {
         next: () => {
-          this._snackBar.open("Your registration has succeeded. You will be redirected soon to the login page.","Got it")
+          this._snackBar.open(
+            "Your registration has succeeded. You will be redirected soon to the login page.",
+            "Got it",{
+            duration: 2000
+            })
           setTimeout(
             ()=>{
               this.router.navigate(["/login"])
