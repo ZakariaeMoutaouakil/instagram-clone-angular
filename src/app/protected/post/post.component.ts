@@ -21,6 +21,7 @@ import {PostState} from "./store/post-state.store";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {HttpClient} from "@angular/common/http";
 import {MatProgressBar} from "@angular/material/progress-bar";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-post',
@@ -103,7 +104,7 @@ export class PostComponent implements OnInit {
     if (this.emailFormControl.status === "VALID") {
       this.addCommentLoadingEffect$.set(true)
       this.httpClient
-        .post<{ comment: string, username: string }>(`http://localhost:8080/comments/${this.postId}`,
+        .post<{ comment: string, username: string }>(environment.apiUrl + `comments/${this.postId}`,
           {
             comment: this.emailFormControl.value,
             username: this.username

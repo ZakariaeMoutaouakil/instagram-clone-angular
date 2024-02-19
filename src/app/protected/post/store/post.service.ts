@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {map, Observable} from "rxjs";
 import {Comment, PostInfo} from "./post-state.store";
+import {environment} from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class PostService {
 
   getComments(postId: number, pageNumber: number) {
     return this.httpClient
-      .get<any>(`http://localhost:8080/posts/${postId}?pageNumber=${pageNumber}`)
+      .get<any>(environment.apiUrl + `posts/${postId}?pageNumber=${pageNumber}`)
       .pipe(
         map(response => response.comments.content as Comment[])
       )
@@ -22,7 +23,7 @@ export class PostService {
 
   getMetadata(postId: number): Observable<{ postInfo: PostInfo, totalPages: number }> {
     return this.httpClient
-      .get<any>(`http://localhost:8080/posts/${postId}?pageNumber=0`)
+      .get<any>(environment.apiUrl + `posts/${postId}?pageNumber=0`)
       .pipe(
         map(response => {
             return {

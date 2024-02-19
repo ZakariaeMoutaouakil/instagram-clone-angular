@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {map, Observable} from "rxjs";
 import {FeedPost, FeedState} from "./feed-state.store";
+import {environment} from "../../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class FeedService {
 
   getPosts(username: string, number: number): Observable<FeedState> {
     return this.httpClient
-      .get<any>(`http://localhost:8080/posts/feed/${username}?pageNumber=${number}`)
+      .get<any>(environment.apiUrl + `posts/feed/${username}?pageNumber=${number}`)
       .pipe(
         map(response => {
           const posts: FeedPost[] = [];

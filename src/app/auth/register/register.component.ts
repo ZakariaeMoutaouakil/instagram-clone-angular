@@ -8,6 +8,7 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {MatButton} from "@angular/material/button";
 import {HttpClient} from "@angular/common/http";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-register',
@@ -49,18 +50,18 @@ export class RegisterComponent {
   }
 
   OnSubmit() {
-    this.httpClient.post('http://localhost:8080/persons/register', this.signUp.value).subscribe(
+    this.httpClient.post(environment.apiUrl + 'register', this.signUp.value).subscribe(
       {
         next: () => {
           this._snackBar.open(
             "Your registration has succeeded. You will be redirected soon to the login page.",
-            "Got it",{
-            duration: 2000
+            "Got it", {
+              duration: 2000
             })
           setTimeout(
-            ()=>{
+            () => {
               this.router.navigate(["/login"])
-            },2000
+            }, 2000
           )
         },
         error: () => {
