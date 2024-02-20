@@ -34,7 +34,7 @@
         <p style="align-self: center">Your Password:</p>
         <mat-form-field style="align-self: center;">
           <mat-label>Password</mat-label>
-          <input formControlName="password" matInput placeholder="Password*">
+          <input formControlName="password" matInput placeholder="Password*" type="password">
           @if (passwordFormControl.hasError('required')) {
             <mat-error>Password is <strong>required!</strong></mat-error>
           } @else if (passwordFormControl.hasError('minlength')) {
