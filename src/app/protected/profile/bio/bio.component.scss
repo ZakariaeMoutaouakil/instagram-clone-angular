@@ -2,11 +2,15 @@
   margin-top: 2%;
   margin-right: 20%;
   margin-left: 10%;
-  display: grid;
-  grid-template-columns: 30% 70%;
+  display: flex;
+
+  //display: grid;
+  //grid-template-columns: 30% 70%;
 }
 
 .info {
+  margin-left: 5%;
+  width: 60%;
   display: grid;
   grid-template-rows: repeat(3, auto);
 }
@@ -16,9 +20,11 @@ p {
 }
 
 .header {
-  display: grid;
-  grid-template-columns: repeat(4, auto);
-  align-items: center;
+  //display: grid;
+  //grid-template-columns: repeat(4, auto);
+  display: flex;
+  justify-content: space-between;
+  //align-items: center;
 
   .checkmark {
     display: flex;
@@ -26,14 +32,20 @@ p {
     align-items: center;
   }
 
-  button {
-    margin-left: 10%;
+  .buttons{
+    display: flex;
+    //justify-content: ;
+    align-items: center;
   }
+
+  //button {
+  //  margin-left: 10%;
+  //}
 }
 
 .stats {
-  display: grid;
-  grid-template-columns: repeat(3, auto);
+  display: flex;
+  justify-content: space-between;
   margin-right: 0;
 
   .middle {

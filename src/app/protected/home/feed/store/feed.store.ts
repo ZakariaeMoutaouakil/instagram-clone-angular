@@ -22,14 +22,26 @@ export class FeedStore extends ComponentStore<FeedState> {
     last: true
   }));
 
+  readonly likePost = this.updater((state, params: { postId: number, like: boolean }) => {
+    const indexToUpdate = state.posts.findIndex(post => post.id === params.postId);
+    const updatedPosts = indexToUpdate !== -1 ?
+      state.posts.map((post, index) => index === indexToUpdate ?
+        { ...post, like: params.like, likesCount: params.like ? post.likesCount + 1 : post.likesCount - 1 } :
+        post
+      ) :
+      state.posts;
+
+    return { ...state, posts: updatedPosts };
+  });
+
   // Selectors
   readonly feedState$ = this.selectSignal((state) => state);
 
   // Effects
-  readonly getPosts = this.effect((params$: Observable<{ username: string, number: number }>) => {
-    return params$.pipe(
-      switchMap((params) =>
-        this.feedService.getPosts(params.username, params.number)
+  readonly getPosts = this.effect((pageNumber$: Observable<number>) => {
+    return pageNumber$.pipe(
+      switchMap((pageNumber) =>
+        this.feedService.getPosts(pageNumber)
           .pipe(
             tapResponse(
               (feedState) => {
@@ -46,7 +58,7 @@ export class FeedStore extends ComponentStore<FeedState> {
       ))
   });
 
-  constructor(private feedService: FeedService) {
+  constructor(private readonly feedService: FeedService) {
     super({posts: [], number: 0, last: false});
   }
 }

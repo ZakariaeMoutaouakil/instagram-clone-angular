@@ -22,6 +22,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {HttpClient} from "@angular/common/http";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {environment} from "../../../environments/environment";
+import {tap} from "rxjs";
 
 @Component({
   selector: 'app-post',
@@ -68,7 +69,7 @@ export class PostComponent implements OnInit {
               private readonly postStore: PostStore,
               private readonly _snackBar: MatSnackBar,
               private readonly httpClient: HttpClient) {
-    this.postStore.getMetadata(this.postId);
+    this.postStore.getMetadata(this.postId)
   }
 
   openSnackBar(message: string, action: string, callback: () => void) {
@@ -80,10 +81,6 @@ export class PostComponent implements OnInit {
         callback();
       }
     });
-  }
-
-  myActionMethod() {
-    location.reload()
   }
 
   ngOnInit(): void {
@@ -104,16 +101,15 @@ export class PostComponent implements OnInit {
     if (this.emailFormControl.status === "VALID") {
       this.addCommentLoadingEffect$.set(true)
       this.httpClient
-        .post<{ comment: string, username: string }>(environment.apiUrl + `comments/${this.postId}`,
-          {
-            comment: this.emailFormControl.value,
-            username: this.username
-          }
-        )
+        .post<string>(environment.apiUrl + `comments/create/${this.postId}`, this.emailFormControl.value)
         .subscribe(
           {
-            next: res => {
-              this.openSnackBar("Your message has been successfully added.", "Reload", this.myActionMethod);
+            next: _res => {
+              this.openSnackBar(
+                "Your message has been successfully added.",
+                "Reload",
+                () => location.reload()
+              );
               this.addCommentLoadingEffect$.set(false)
             },
             error: err => {
@@ -124,5 +120,14 @@ export class PostComponent implements OnInit {
           }
         )
     }
+  }
+
+  likePost() {
+    this.httpClient.post<any>(environment.apiUrl + 'posts/like/' + this.postId, null)
+      .pipe(tap(() => this.postStore.getMetadata(this.postId)))
+      .subscribe({
+        next: res => console.log(res),
+        error: err => console.log(err)
+      })
   }
 }

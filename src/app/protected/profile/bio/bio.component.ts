@@ -20,7 +20,7 @@ import {map, tap} from "rxjs";
   // providers:[PersonStore]
 })
 export class BioComponent implements OnInit {
-  PersonState$ = this.personStore.PersonState$;
+  personState$ = this.personStore.PersonState$;
   defaultPhoto = "https://img.freepik.com/free-photo/abstract-surface-textures-white-concrete-stone-wall_74190-8189.jpg?size=626&ext=jpg&ga=GA1.1.1448711260.1707048000&semt=sph";
 
   constructor(private readonly personStore: PersonStore,
@@ -41,10 +41,14 @@ export class BioComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.PersonState$.subscribe(value => {
-      console.log("PersonState$")
+    this.personState$.subscribe(value => {
+      console.log("PersonState$()")
       console.log(value)
     })
   }
 
+  follow() {
+    console.log(this.activatedRoute.snapshot.params['username'])
+    this.personStore.follow(this.activatedRoute.snapshot.params['username'])
+  }
 }

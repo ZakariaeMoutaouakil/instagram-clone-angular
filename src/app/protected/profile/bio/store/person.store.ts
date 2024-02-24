@@ -23,33 +23,43 @@ export class PersonStore extends ComponentStore<PersonState> {
   readonly getInfo = this.effect((username$: Observable<string>) => {
     return username$.pipe(switchMap((username) => this.personService.getInfo(username).pipe(
       tapResponse((info) => {
-        if(!!info){
+        if (!!info) {
           this.addInfo(info)
         }
         console.log(info)
       }, (error: HttpErrorResponse) => {
         console.log("httperror")
         console.log(error)
-    },))))
+      },))))
   });
 
   readonly getStats = this.effect((username$: Observable<string>) => {
     return username$.pipe(switchMap((username) => this.personService.getStats(username).pipe(
       tapResponse((stats) => {
-        if(!!stats) {
+        if (!!stats) {
           this.addStats(stats)
         }
         console.log(stats)
       }, (error: HttpErrorResponse) => {
         console.log("httperror")
         console.log(error)
-    },))))
+      },))))
+  })
+
+  readonly follow = this.effect((username$: Observable<string>) => {
+    return username$.pipe(switchMap((username) => this.personService.follow(username).pipe(
+      tapResponse(() => {
+        this.getInfo(username)
+        this.getStats(username)
+      }, (error: HttpErrorResponse) => {
+        console.log(error)
+      },))))
   })
 
   constructor(private personService: PersonService) {
     super({
       info: {
-        username: "", firstname: "", lastname: "", bio: "", validated: false, photo: ""
+        username: "", firstname: "", lastname: "", bio: "", validated: false, photo: "", follow: false
       }, stats: {
         followers: 0, followings: 0, posts: 0
       }

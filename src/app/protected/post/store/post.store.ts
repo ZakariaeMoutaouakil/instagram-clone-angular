@@ -81,7 +81,8 @@ export class PostStore extends ComponentStore<PostState> {
         description: "",
         image: "",
         photo: "",
-        hashtags: []
+        hashtags: [],
+        like: false
       },
       comments: [],
       commentMetadata: {

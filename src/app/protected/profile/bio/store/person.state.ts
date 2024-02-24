@@ -5,7 +5,9 @@ export type info = {
   bio: string
   validated: boolean
   photo: string
+  follow: boolean
 }
+
 export type stats = {
   followers: number
   followings: number
@@ -13,6 +15,6 @@ export type stats = {
 }
 
 export interface PersonState {
-   info: info
-   stats: stats
+  info: info
+  stats: stats
 }

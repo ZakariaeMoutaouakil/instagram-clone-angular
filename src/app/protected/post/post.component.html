@@ -25,8 +25,8 @@
         <div class="scroll">
           <mat-card-content style="display: flex; justify-content: center; flex-direction: column">
             <p>{{ postState$().postInfo.description }}</p>
-            @for (hashtag of postState$().postInfo.hashtags; track $index){
-              <p style="color:blue;">#{{hashtag}}</p>
+            @for (hashtag of postState$().postInfo.hashtags; track $index) {
+              <p style="color:blue;">#{{ hashtag }}</p>
             }
             <p style="color:gray; margin: 5% 0; text-align: center">Comments:</p>
             @if (postState$().comments.length === 0) {
@@ -47,7 +47,8 @@
                        routerLink="/{{comment.authorUsername}}">{{ comment.authorUsername }}</a>
                     {{ comment.comment }}
                   </mat-card-title>
-                  <mat-card-subtitle style="margin-bottom: 5%">{{ comment.timeUntilNow.toString() }} days ago</mat-card-subtitle>
+                  <mat-card-subtitle style="margin-bottom: 5%">{{ comment.timeUntilNow.toString() }} days ago
+                  </mat-card-subtitle>
                 </mat-card-header>
               }
               @if (postState$().commentMetadata.pageNumber < postState$().commentMetadata.totalPages) {
@@ -65,25 +66,19 @@
         <div class="end">
           <mat-card-actions style="display: flex; justify-content: space-between">
             <div class="left">
-              <button aria-label="" mat-icon-button>
-                <mat-icon>favorite</mat-icon>
-              </button>
-              <button aria-label="" mat-icon-button>
-                <mat-icon>share</mat-icon>
+              <button (click)="likePost()" aria-label="liked" mat-icon-button>
+                <mat-icon>{{ postState$().postInfo.like ? 'favorite' : 'favorite_border' }}</mat-icon>
               </button>
             </div>
-            <button aria-label="" class="right" mat-icon-button>
-              <mat-icon>bookmark</mat-icon>
-            </button>
           </mat-card-actions>
           <mat-card-content class="stats">
             <p>{{ postState$().postInfo.likesCount }} likes</p>
             <p style="font-weight: lighter; color: gray">{{ postState$().postInfo.timeUntilNow.toString() }} days
               ago</p>
           </mat-card-content>
-          <form class="comment"
-                style="display: flex; justify-content: space-between; margin-left: 1%"
-                (ngSubmit)="OnSubmit()">
+          <form (ngSubmit)="OnSubmit()"
+                class="comment"
+                style="display: flex; justify-content: space-between; margin-left: 1%">
             <mat-form-field appearance="outline" color="primary" style="width: 100%">
               <input [formControl]="emailFormControl"
                      matInput
@@ -92,7 +87,7 @@
               <mat-hint>Type above to add a comment.</mat-hint>
               @if (emailFormControl.hasError('required')) {
                 <mat-error>Comment cannot be <strong>empty!</strong></mat-error>
-              } @else if (emailFormControl.hasError('maxlength')){
+              } @else if (emailFormControl.hasError('maxlength')) {
                 <mat-error>Comment is too <strong>long!</strong></mat-error>
               }
             </mat-form-field>
@@ -102,7 +97,7 @@
               <mat-icon>send</mat-icon>
             </button>
           </form>
-          @if (addCommentLoadingEffect$()){
+          @if (addCommentLoadingEffect$()) {
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
           }
         </div>

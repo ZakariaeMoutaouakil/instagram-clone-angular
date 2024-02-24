@@ -7,7 +7,7 @@
              mat-card-avatar></div>
         <mat-card-title>
           <a routerLink="{{post.uploaderUsername}}" style="color: black;text-decoration: none; font-weight: bold">
-            {{post.uploaderUsername}}
+            {{ post.uploaderUsername }}
           </a>
         </mat-card-title>
         <mat-card-subtitle>{{ post.timeUntilNow }} days ago</mat-card-subtitle>
@@ -15,16 +15,16 @@
       <img alt="profile pic" mat-card-image src="{{post.image}}">
       <mat-card-actions style="display:flex; flex-direction: row; justify-content: space-between">
         <div>
-          <button aria-label="favorite" mat-icon-button>
-            <mat-icon>favorite</mat-icon>
+          <button (click)="likePost(post)" aria-label="favorite" mat-icon-button>
+            <mat-icon>{{ post.like ? 'favorite' : 'favorite_border' }}</mat-icon>
           </button>
-          <button aria-label="share" mat-icon-button>
-            <mat-icon>share</mat-icon>
-          </button>
+          <!--          <button aria-label="share" mat-icon-button>-->
+          <!--            <mat-icon>share</mat-icon>-->
+          <!--          </button>-->
         </div>
-        <button aria-label="bookmark" mat-icon-button>
-          <mat-icon>bookmark</mat-icon>
-        </button>
+        <!--        <button aria-label="bookmark" mat-icon-button>-->
+        <!--          <mat-icon>bookmark</mat-icon>-->
+        <!--        </button>-->
       </mat-card-actions>
       <mat-card-content>
         <strong>{{ post.likesCount }} likes</strong>
@@ -41,13 +41,13 @@
         </p>
         <a style="text-decoration: none" [routerLink]="[post.uploaderUsername,post.id]">
           <p style="color: gray; font-weight: lighter;margin: 0">
-            View all {{post.commentCounts}} comments
+            View all {{ post.commentCounts }} comments
           </p>
         </a>
       </mat-card-content>
     </mat-card>
   }
-  @if(feedState$().last){
+  @if (feedState$().last) {
     <p>There are no more posts. Please come back again after some time.</p>
   }
 </section>

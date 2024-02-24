@@ -12,9 +12,9 @@ export class FeedService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getPosts(username: string, number: number): Observable<FeedState> {
+  getPosts(number: number): Observable<FeedState> {
     return this.httpClient
-      .get<any>(environment.apiUrl + `posts/feed/${username}?pageNumber=${number}`)
+      .get<any>(environment.apiUrl + `posts/feed?pageNumber=${number}`)
       .pipe(
         map(response => {
           const posts: FeedPost[] = [];
@@ -28,7 +28,8 @@ export class FeedService {
               description: post.postFeedProjection.description,
               uploaderValidated: post.postFeedProjection.uploaderValidated,
               likesCount: post.likesCount,
-              commentCounts: post.commentCounts
+              commentCounts: post.commentCounts,
+              like: post.like
             })
           }
           return {

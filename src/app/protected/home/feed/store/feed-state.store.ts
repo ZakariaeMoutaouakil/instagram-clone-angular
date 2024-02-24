@@ -8,6 +8,7 @@ export type FeedPost = {
   likesCount: number
   commentCounts: number
   uploaderValidated: boolean
+  like: boolean
 }
 
 export type FeedState = {

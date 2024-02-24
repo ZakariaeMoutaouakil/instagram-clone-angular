@@ -39,11 +39,15 @@ a {
 .logo {
   //border: solid red;
   height: 4em;
-  background-image: url("https://i.pinimg.com/originals/ac/76/72/ac76724616bde8c8749f73c1d07ee255.png");
-  background-position: center;
-  background-repeat: no-repeat;
-
-  &:hover {
-    opacity: 60%;
+  position: relative;
+  img{
+    object-fit: contain;
   }
+  //background-image: url("https://i.pinimg.com/originals/ac/76/72/ac76724616bde8c8749f73c1d07ee255.png");
+  //background-position: center;
+  //background-repeat: no-repeat;
+  //
+  //&:hover {
+  //  opacity: 60%;
+  //}
 }

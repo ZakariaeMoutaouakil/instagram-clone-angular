@@ -1,1 +1,21 @@
-<!--<p>suggestions works!</p>-->
+<p>Suggestions:</p>
+@if (suggestionsState$().suggestions.length === 0) {
+  <p style="color:gray;">There no more suggestions. Please come back later.</p>
+} @else {
+  @for (suggestion of suggestionsState$().suggestions; track $index) {
+    <mat-card style="position: relative; margin-bottom: 5%; text-align: left">
+      <mat-card-header>
+        <div [routerLink]="['/', suggestion.username]"
+             mat-card-avatar
+             style="background-image: url('{{suggestion.photo}}'); background-size: cover"></div>
+        <mat-card-title>
+          <a [routerLink]="['/', suggestion.username]"
+             style="text-decoration: none; color: black; font-weight: bold">
+            {{ suggestion.username }}
+          </a>
+        </mat-card-title>
+        <mat-card-subtitle>Suggested for you</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+  }
+}

@@ -17,6 +17,7 @@ export type PostInfo = {
   image: string
   photo: string
   hashtags: string[]
+  like: boolean
 }
 
 export type PostState = {

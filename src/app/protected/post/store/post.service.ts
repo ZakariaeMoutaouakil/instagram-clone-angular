@@ -33,7 +33,8 @@ export class PostService {
                 description: response.description as string,
                 image: response.image as string,
                 photo: response.photo as string,
-                hashtags: response.hashtags as string[]
+                hashtags: response.hashtags as string[],
+                like: response.like as boolean
               },
               totalPages: response.comments.totalPages as number
             };

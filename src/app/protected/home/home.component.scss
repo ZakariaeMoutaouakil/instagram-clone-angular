@@ -3,8 +3,16 @@
   grid-template-columns: 70% 30%;
 }
 
-.suggestions {
+app-suggestions {
   position: sticky;
   top: 0;
+  right: 0;
   height: 100vh;
+  display: flex;
+  text-align: center;
+  //justify-content: center;
+  flex-direction: column;
+  margin-top: 20%;
+  padding-right: 5%;
+  align-items: center;
 }
