@@ -9,6 +9,7 @@ import {HttpErrorResponse} from "@angular/common/http";
   providedIn: 'root'
 })
 export class PostStore extends ComponentStore<PostState> {
+
   // Updaters
   readonly addTotalPages = this.updater((state, totalPages: number) => ({
     postInfo: state.postInfo,
@@ -17,7 +18,7 @@ export class PostStore extends ComponentStore<PostState> {
       pageNumber: state.commentMetadata.pageNumber,
       totalPages: totalPages
     }
-  }));
+  }))
 
   readonly addComments = this.updater((state, comments: Comment[]) => (
     {
@@ -28,7 +29,7 @@ export class PostStore extends ComponentStore<PostState> {
         totalPages: state.commentMetadata.totalPages
       }
     }
-  ));
+  ))
 
   readonly addPostInfo = this.updater((state, postInfo: PostInfo) => (
     {
@@ -36,10 +37,29 @@ export class PostStore extends ComponentStore<PostState> {
       comments: state.comments,
       commentMetadata: state.commentMetadata
     }
-  ));
+  ))
+
+  readonly updateComment = this.updater((state, params: { commentId: number, comment: string }) => {
+    return {
+      ...state,
+      comments: state.comments.map((comment, _) => {
+        if (comment.id === params.commentId) {
+          return {...comment, comment: params.comment};
+        }
+        return comment;
+      }),
+    }
+  })
+
+  readonly deleteComment = this.updater((state, commentId: number) => {
+    return {
+      ...state,
+      comments: state.comments.filter((comment, _) => comment.id !== commentId),
+    }
+  })
 
   // selectors
-  readonly postState$ = this.selectSignal(state => state);
+  readonly postState$ = this.selectSignal(state => state)
 
   // effects
   readonly getMetadata = this.effect((postId$: Observable<number>) => {
@@ -55,7 +75,7 @@ export class PostStore extends ComponentStore<PostState> {
           ),
         )),
     );
-  });
+  })
 
   readonly getComments = this.effect((params$: Observable<{ postId: number, pageNumber: number }>) => {
     return params$.pipe(
@@ -71,7 +91,36 @@ export class PostStore extends ComponentStore<PostState> {
           ),
         )),
     );
-  });
+  })
+
+  readonly updateComments = this.effect((params$: Observable<{ commentId: number, comment: string }>) => {
+    return params$.pipe(
+      switchMap((params) =>
+        this.postService.updateComment(params.commentId, params.comment).pipe(
+          tapResponse(
+            () => {
+              this.updateComment({commentId: params.commentId, comment: params.comment})
+            },
+            (error: HttpErrorResponse) => console.log(error),
+          ),
+        )),
+    );
+  })
+
+  readonly deleteComments = this.effect((commentId$: Observable<number>) => {
+    return commentId$.pipe(
+      switchMap((commentId) =>
+        this.postService.deleteComment(commentId).pipe(
+          tapResponse(
+            () => {
+              this.deleteComment(commentId)
+              console.log(this.postState$())
+            },
+            (error: HttpErrorResponse) => console.log(error),
+          ),
+        )),
+    );
+  })
 
   constructor(private postService: PostService) {
     super({

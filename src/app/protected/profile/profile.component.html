@@ -1,6 +1,6 @@
 <app-bio></app-bio>
 <main class="tabs">
-  <mat-tab-group dynamicHeight color="primary">
+  <mat-tab-group color="primary" dynamicHeight>
     <mat-tab label="Posts">
       <app-posts></app-posts>
     </mat-tab>
@@ -9,4 +9,8 @@
     </mat-tab>
   </mat-tab-group>
 </main>
-
+@if () {
+  <button mat-fab class="floating-button" color="primary">
+    <mat-icon>add</mat-icon>
+  </button>
+}

@@ -17,12 +17,15 @@ import {MatError, MatFormField, MatHint} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {FormControl, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {PostStore} from "./store/post.store";
-import {PostState} from "./store/post-state.store";
+import {Comment, PostState} from "./store/post-state.store";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {HttpClient} from "@angular/common/http";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {environment} from "../../../environments/environment";
 import {tap} from "rxjs";
+import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
+import {MatDialog} from "@angular/material/dialog";
+import {DialogComponent} from "./dialog/dialog.component";
 
 @Component({
   selector: 'app-post',
@@ -48,28 +51,45 @@ import {tap} from "rxjs";
     MatFabButton,
     MatButton,
     FormsModule,
-    MatProgressBar
+    MatProgressBar,
+    MatMenuTrigger,
+    MatMenuItem,
+    MatMenu
   ],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss',
   providers: [PostStore]
 })
 export class PostComponent implements OnInit {
-  postId: number = +this.activatedRoute.snapshot.params["postId"];
-  username: string = this.activatedRoute.snapshot.params["username"];
-  emailFormControl = new FormControl('', [
+  protected readonly postState$: Signal<PostState> = this.postStore.postState$
+  protected readonly defaultPhoto = "https://img.freepik.com/free-photo/abstract-surface-textures-white-concrete-stone-wall_74190-8189.jpg?size=626&ext=jpg&ga=GA1.1.1448711260.1707048000&semt=sph"
+  protected readonly addCommentLoadingEffect$ = signal<boolean>(false)
+  protected readonly authenticateUser = atob(localStorage.getItem(btoa("authenticated"))!)
+  protected readonly username: string = this.activatedRoute.snapshot.params["username"]
+  protected readonly commentFormControl = new FormControl('', [
     Validators.required,
     Validators.maxLength(50)
-  ]);
-  postState$: Signal<PostState> = this.postStore.postState$;
-  defaultPhoto = "https://img.freepik.com/free-photo/abstract-surface-textures-white-concrete-stone-wall_74190-8189.jpg?size=626&ext=jpg&ga=GA1.1.1448711260.1707048000&semt=sph";
-  addCommentLoadingEffect$ = signal<boolean>(false)
+  ])
+  private readonly postId: number = +this.activatedRoute.snapshot.params["postId"]
 
   constructor(private readonly activatedRoute: ActivatedRoute,
               private readonly postStore: PostStore,
               private readonly _snackBar: MatSnackBar,
-              private readonly httpClient: HttpClient) {
+              private readonly httpClient: HttpClient,
+              public dialog: MatDialog) {
     this.postStore.getMetadata(this.postId)
+  }
+
+  openDialog(comment: Comment): void {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      data: {comment: comment.comment}
+    });
+
+    dialogRef.afterClosed().subscribe(updatedComment => {
+      if (!!updatedComment) {
+        this.postStore.updateComments({commentId: comment.id, comment: updatedComment})
+      }
+    });
   }
 
   openSnackBar(message: string, action: string, callback: () => void) {
@@ -97,11 +117,11 @@ export class PostComponent implements OnInit {
   }
 
   OnSubmit() {
-    console.log(this.emailFormControl)
-    if (this.emailFormControl.status === "VALID") {
+    console.log(this.commentFormControl)
+    if (this.commentFormControl.status === "VALID") {
       this.addCommentLoadingEffect$.set(true)
       this.httpClient
-        .post<string>(environment.apiUrl + `comments/create/${this.postId}`, this.emailFormControl.value)
+        .post<string>(environment.apiUrl + `comments/${this.postId}`, this.commentFormControl.value)
         .subscribe(
           {
             next: _res => {
@@ -109,7 +129,7 @@ export class PostComponent implements OnInit {
                 "Your message has been successfully added.",
                 "Reload",
                 () => location.reload()
-              );
+              )
               this.addCommentLoadingEffect$.set(false)
             },
             error: err => {
@@ -129,5 +149,11 @@ export class PostComponent implements OnInit {
         next: res => console.log(res),
         error: err => console.log(err)
       })
+  }
+
+  deleteComment(comment: Comment) {
+    console.log(comment)
+    this.postStore.deleteComments(comment.id)
+    console.log(this.postState$())
   }
 }

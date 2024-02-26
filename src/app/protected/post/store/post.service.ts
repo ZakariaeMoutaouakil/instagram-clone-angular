@@ -23,7 +23,7 @@ export class PostService {
 
   getMetadata(postId: number): Observable<{ postInfo: PostInfo, totalPages: number }> {
     return this.httpClient
-      .get<any>(environment.apiUrl + `posts/${postId}?pageNumber=0`)
+      .get<any>(environment.apiUrl + `posts/${postId}`)
       .pipe(
         map(response => {
             return {
@@ -40,5 +40,13 @@ export class PostService {
             };
           }
         ))
+  }
+
+  updateComment(commentId: number, comment: string) {
+    return this.httpClient.put<string>(environment.apiUrl + `comments/${commentId}`, comment)
+  }
+
+  deleteComment(commentId: number) {
+    return this.httpClient.delete<string>(environment.apiUrl + `comments/${commentId}`)
   }
 }

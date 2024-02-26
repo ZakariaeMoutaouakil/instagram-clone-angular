@@ -30,32 +30,57 @@
             }
             <p style="color:gray; margin: 5% 0; text-align: center">Comments:</p>
             @if (postState$().comments.length === 0) {
-              <p style="color:gray; margin: 5% 0; text-align: center">There are no comments. Be the first of share your
-                thoughts!</p>
+              <p style="color:gray; margin: 5% 0; text-align: center">
+                There are no comments. Be the first of share your thoughts!
+              </p>
             } @else {
               @for (comment of postState$().comments; track $index) {
-                <mat-card-header
-                  style="padding: 0 0; display: flex; flex-direction: row-reverse;justify-content: flex-end;">
-                  <a routerLink="/{{comment.authorUsername}}" style="display: compact; margin-right: 3% ">
-                    <div class="avatar"
-                         mat-card-avatar
-                         style="background-image: url('{{comment.authorPhoto}}'); background-size: cover;">
-                    </div>
-                  </a>
-                  <mat-card-title style="text-decoration: none; font-weight: normal">
-                    <a style="text-decoration: none; color: black; font-weight: bold"
-                       routerLink="/{{comment.authorUsername}}">{{ comment.authorUsername }}</a>
-                    {{ comment.comment }}
-                  </mat-card-title>
-                  <mat-card-subtitle style="margin-bottom: 5%">{{ comment.timeUntilNow.toString() }} days ago
-                  </mat-card-subtitle>
-                </mat-card-header>
+                <div style="display: flex; justify-content: space-between">
+                  <mat-card-header
+                    style="padding: 0 0; display: flex; flex-direction: row-reverse;justify-content: flex-end; flex-grow: 4">
+                    <a routerLink="/{{comment.authorUsername}}" style="display: compact; margin-right: 3% ">
+                      <div class="avatar"
+                           mat-card-avatar
+                           style="background-image: url('{{comment.authorPhoto}}'); background-size: cover;">
+                      </div>
+                    </a>
+
+                    <mat-card-title style="text-decoration: none; font-weight: normal">
+                      <a style="text-decoration: none; color: black; font-weight: bold"
+                         routerLink="/{{comment.authorUsername}}">{{ comment.authorUsername }}</a>
+                      {{ comment.comment }}
+                    </mat-card-title>
+
+                    <mat-card-subtitle style="margin-bottom: 5%">
+                      {{ comment.timeUntilNow.toString() }} days ago
+                    </mat-card-subtitle>
+
+                  </mat-card-header>
+                  @if (comment.authorUsername === authenticateUser) {
+                    <button mat-icon-button
+                            [matMenuTriggerFor]="menu"
+                            aria-label="Edit comment">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu" xPosition="before">
+                      <button mat-menu-item (click)="openDialog(comment)">
+                        <mat-icon>edit</mat-icon>
+                        <span>Edit</span>
+                      </button>
+                      <button mat-menu-item (click)="deleteComment(comment)">
+                        <mat-icon>delete</mat-icon>
+                        <span>Delete</span>
+                      </button>
+                    </mat-menu>
+                  }
+                </div>
               }
               @if (postState$().commentMetadata.pageNumber < postState$().commentMetadata.totalPages) {
                 <button color="primary"
                         mat-button
                         (click)="addComments()"
-                        style="margin: 0 20%">Load more comments
+                        style="margin: 0 20%">
+                  Load more comments
                 </button>
               } @else {
                 <p style="color:gray; margin: 5% 0; text-align: center">There are no more comments.</p>
@@ -80,14 +105,14 @@
                 class="comment"
                 style="display: flex; justify-content: space-between; margin-left: 1%">
             <mat-form-field appearance="outline" color="primary" style="width: 100%">
-              <input [formControl]="emailFormControl"
+              <input [formControl]="commentFormControl"
                      matInput
                      placeholder="Add comment"
                      type="text">
               <mat-hint>Type above to add a comment.</mat-hint>
-              @if (emailFormControl.hasError('required')) {
+              @if (commentFormControl.hasError('required')) {
                 <mat-error>Comment cannot be <strong>empty!</strong></mat-error>
-              } @else if (emailFormControl.hasError('maxlength')) {
+              } @else if (commentFormControl.hasError('maxlength')) {
                 <mat-error>Comment is too <strong>long!</strong></mat-error>
               }
             </mat-form-field>

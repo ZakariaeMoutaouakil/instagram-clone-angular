@@ -1,8 +1,9 @@
 export type Comment = {
   authorPhoto: string
   authorUsername: string
-  timeUntilNow: number
   comment: string
+  id: number
+  timeUntilNow: number
 }
 
 export type CommentMetadata = {
@@ -11,17 +12,17 @@ export type CommentMetadata = {
 }
 
 export type PostInfo = {
-  timeUntilNow: number
-  likesCount: number
   description: string
-  image: string
-  photo: string
   hashtags: string[]
+  image: string
   like: boolean
+  likesCount: number
+  photo: string
+  timeUntilNow: number
 }
 
 export type PostState = {
-  postInfo: PostInfo
-  comments: Comment[]
   commentMetadata: CommentMetadata
+  comments: Comment[]
+  postInfo: PostInfo
 }

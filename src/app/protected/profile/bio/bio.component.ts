@@ -16,16 +16,16 @@ import {map, tap} from "rxjs";
     AsyncPipe
   ],
   templateUrl: './bio.component.html',
-  styleUrl: './bio.component.scss',
-  // providers:[PersonStore]
+  styleUrl: './bio.component.scss'
 })
 export class BioComponent implements OnInit {
-  personState$ = this.personStore.PersonState$;
-  defaultPhoto = "https://img.freepik.com/free-photo/abstract-surface-textures-white-concrete-stone-wall_74190-8189.jpg?size=626&ext=jpg&ga=GA1.1.1448711260.1707048000&semt=sph";
+  protected readonly username = atob(localStorage.getItem(btoa("authenticated"))!)
+  protected readonly personState$ = this.personStore.PersonState$;
+  protected readonly defaultPhoto = "https://img.freepik.com/free-photo/abstract-surface-textures-white-concrete-stone-wall_74190-8189.jpg?size=626&ext=jpg&ga=GA1.1.1448711260.1707048000&semt=sph";
 
   constructor(private readonly personStore: PersonStore,
               private activatedRoute: ActivatedRoute) {
-    // this.paramsSubscription=
+    console.log()
     this.activatedRoute.params.pipe(
       map((p) => p['username'] as string),
       tap(username => {

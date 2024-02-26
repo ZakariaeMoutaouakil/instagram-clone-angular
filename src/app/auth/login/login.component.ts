@@ -28,7 +28,7 @@ import {LoginService} from "../service/login/login.service";
   styleUrl: './login.component.scss',
   encapsulation: ViewEncapsulation.None
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   signIn: FormGroup
   usernameFormControl: FormControl<string | null>;
   passwordFormControl: FormControl<string | null>;
@@ -44,24 +44,10 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  ngOnInit(): void {
-    console.log("login ngOnInit:")
-    if (!localStorage.getItem(btoa("authenticated"))) {
-      this.loginService.preflight().subscribe({
-        next: () => {
-          localStorage.setItem(btoa("authenticated"), btoa("true"))
-          this.router.navigate(["/"])
-        },
-        error: () => {
-        }
-      })
-    }
-  }
-
   OnSubmit() {
     this.loginService.login(this.signIn.value.username, this.signIn.value.password).subscribe({
-        next: () => {
-          localStorage.setItem(btoa("authenticated"), btoa("true"))
+        next: username => {
+          localStorage.setItem(btoa("authenticated"), btoa(username))
           this._snackBar.open(
             "Your authentication has succeeded. You will be redirected soon to the home page.",
             "Got it",{

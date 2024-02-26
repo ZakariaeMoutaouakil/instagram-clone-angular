@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {MatButton} from "@angular/material/button";
+import {MatButton, MatFabButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {NgOptimizedImage} from "@angular/common";
 import {BioComponent} from "./bio/bio.component";
@@ -18,7 +18,9 @@ import {ReelsComponent} from "./reels/reels.component";
     MatTabGroup,
     MatTab,
     PostsComponent,
-    ReelsComponent
+    ReelsComponent,
+    MatIconButton,
+    MatFabButton
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
