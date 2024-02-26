@@ -4,6 +4,8 @@ import {MatIcon} from "@angular/material/icon";
 import {PostsStore} from "./store/posts.store";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {fromEvent, interval, Subscription, tap} from "rxjs";
+import {MatFabButton} from "@angular/material/button";
+import {LoginService} from "../../../auth/service/login/login.service";
 
 @Component({
   selector: 'app-posts',
@@ -12,7 +14,8 @@ import {fromEvent, interval, Subscription, tap} from "rxjs";
     NgOptimizedImage,
     MatIcon,
     AsyncPipe,
-    RouterLink
+    RouterLink,
+    MatFabButton
   ],
   templateUrl: './posts.component.html',
   styleUrl: './posts.component.scss',
@@ -49,7 +52,8 @@ export class PostsComponent implements OnInit, OnDestroy {
   );
 
   constructor(private readonly postsStore: PostsStore,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              protected readonly loginService:LoginService) {
     this.postsStore.getTotalPages(this.username);
     // document.querySelector( ":hover" );
   }

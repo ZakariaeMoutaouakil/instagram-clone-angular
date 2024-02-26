@@ -6,6 +6,7 @@ import {BioComponent} from "./bio/bio.component";
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
 import {PostsComponent} from "./posts/posts.component";
 import {ReelsComponent} from "./reels/reels.component";
+import {LoginService} from "../../auth/service/login/login.service";
 
 @Component({
   selector: 'app-profile',
@@ -26,5 +27,4 @@ import {ReelsComponent} from "./reels/reels.component";
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent {
-
 }

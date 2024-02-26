@@ -56,7 +56,7 @@
                     </mat-card-subtitle>
 
                   </mat-card-header>
-                  @if (comment.authorUsername === authenticateUser) {
+                  @if (comment.authorUsername === loginService.username()) {
                     <button mat-icon-button
                             [matMenuTriggerFor]="menu"
                             aria-label="Edit comment">

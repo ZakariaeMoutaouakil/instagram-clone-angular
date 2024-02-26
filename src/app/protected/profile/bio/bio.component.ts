@@ -5,6 +5,7 @@ import {AsyncPipe, NgOptimizedImage} from "@angular/common";
 import {PersonStore} from "./store/person.store";
 import {ActivatedRoute} from "@angular/router";
 import {map, tap} from "rxjs";
+import {LoginService} from "../../../auth/service/login/login.service";
 
 @Component({
   selector: 'app-bio',
@@ -19,12 +20,12 @@ import {map, tap} from "rxjs";
   styleUrl: './bio.component.scss'
 })
 export class BioComponent implements OnInit {
-  protected readonly username = atob(localStorage.getItem(btoa("authenticated"))!)
   protected readonly personState$ = this.personStore.PersonState$;
   protected readonly defaultPhoto = "https://img.freepik.com/free-photo/abstract-surface-textures-white-concrete-stone-wall_74190-8189.jpg?size=626&ext=jpg&ga=GA1.1.1448711260.1707048000&semt=sph";
 
   constructor(private readonly personStore: PersonStore,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              protected readonly loginService:LoginService) {
     console.log()
     this.activatedRoute.params.pipe(
       map((p) => p['username'] as string),

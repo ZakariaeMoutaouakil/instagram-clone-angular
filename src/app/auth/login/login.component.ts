@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {NgOptimizedImage} from "@angular/common";
 import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
@@ -47,21 +47,13 @@ export class LoginComponent {
   OnSubmit() {
     this.loginService.login(this.signIn.value.username, this.signIn.value.password).subscribe({
         next: username => {
-          localStorage.setItem(btoa("authenticated"), btoa(username))
-          this._snackBar.open(
-            "Your authentication has succeeded. You will be redirected soon to the home page.",
-            "Got it",{
-            duration: 2000
-          })
-          setTimeout(
-            () => {
-              this.router.navigate(["/"])
-            }, 2000
-          )
+          console.log(username)
+          this.router.navigate(["/"])
         },
-        error: () => {
-          this._snackBar.open('Authentication failed. Please check your credentials and try again.', 'Close');
-        }
+        error: () => this._snackBar.open(
+          'Authentication failed. Please check your credentials and try again.',
+          'Close'
+        )
       }
     )
   }

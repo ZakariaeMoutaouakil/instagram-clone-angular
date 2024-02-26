@@ -25,7 +25,7 @@
         }
       </div>
       <div class="buttons">
-        @if ((personState$|async)!.info.username !== username) {
+        @if ((personState$|async)!.info.username !== loginService.username()) {
           <button (click)="follow()" mat-raised-button>
             {{ (personState$|async)!.info.follow ? 'Unfollow' : 'Follow' }}
           </button>

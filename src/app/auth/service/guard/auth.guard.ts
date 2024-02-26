@@ -1,12 +1,12 @@
 import {CanActivateChildFn, Router} from '@angular/router';
 import {inject} from "@angular/core";
+import {LoginService} from "../login/login.service";
 
 export const authGuard: CanActivateChildFn = (_childRoute, _state) => {
-  // return !!localStorage.getItem(btoa("username"));
-  const isAuthenticated = !!localStorage.getItem(btoa("authenticated"))
+  const isAuthenticated = inject(LoginService).username() !== ""
   if (!isAuthenticated) {
-    // User is not authenticated, redirect to default URL
-    inject(Router).navigate(['/login']) // Replace 'default-url' with your default URL
+    // User is not authenticated, redirect to log-in URL
+    inject(Router).navigate(['/login']).then(inject(LoginService).logout)
     return false
   }
   return true

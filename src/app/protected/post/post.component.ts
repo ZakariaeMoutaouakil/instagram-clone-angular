@@ -26,6 +26,7 @@ import {tap} from "rxjs";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogComponent} from "./dialog/dialog.component";
+import {LoginService} from "../../auth/service/login/login.service";
 
 @Component({
   selector: 'app-post',
@@ -64,7 +65,6 @@ export class PostComponent implements OnInit {
   protected readonly postState$: Signal<PostState> = this.postStore.postState$
   protected readonly defaultPhoto = "https://img.freepik.com/free-photo/abstract-surface-textures-white-concrete-stone-wall_74190-8189.jpg?size=626&ext=jpg&ga=GA1.1.1448711260.1707048000&semt=sph"
   protected readonly addCommentLoadingEffect$ = signal<boolean>(false)
-  protected readonly authenticateUser = atob(localStorage.getItem(btoa("authenticated"))!)
   protected readonly username: string = this.activatedRoute.snapshot.params["username"]
   protected readonly commentFormControl = new FormControl('', [
     Validators.required,
@@ -76,7 +76,8 @@ export class PostComponent implements OnInit {
               private readonly postStore: PostStore,
               private readonly _snackBar: MatSnackBar,
               private readonly httpClient: HttpClient,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              protected readonly loginService: LoginService) {
     this.postStore.getMetadata(this.postId)
   }
 
