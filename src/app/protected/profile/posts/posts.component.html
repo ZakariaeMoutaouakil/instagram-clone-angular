@@ -16,7 +16,7 @@
   </div>
 </section>
 @if (loginService.username() === username) {
-  <button mat-fab class="floating-button" color="primary">
+  <button mat-fab class="floating-button" color="primary" (click)="openDialog()">
     <mat-icon>add</mat-icon>
   </button>
 }

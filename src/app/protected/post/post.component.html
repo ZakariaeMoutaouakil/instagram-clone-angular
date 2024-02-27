@@ -36,6 +36,10 @@
             @if (loginService.username() === username) {
               <div style="margin-top: 5%">
                 <button mat-raised-button (click)="openPostDialog()">Edit</button>
+                <button mat-raised-button
+                        style="margin-left: 5%"
+                        color="warn"
+                        (click)="deletePost()">Delete</button>
               </div>
             }
             <p style="color:gray; margin: 5% 0; text-align: center">Comments:</p>
