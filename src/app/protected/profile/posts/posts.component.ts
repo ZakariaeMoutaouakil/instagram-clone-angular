@@ -4,8 +4,9 @@ import {MatIcon} from "@angular/material/icon";
 import {PostsStore} from "./store/posts.store";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {fromEvent, interval, Subscription, tap} from "rxjs";
-import {MatFabButton} from "@angular/material/button";
+import {MatFabButton, MatIconButton} from "@angular/material/button";
 import {LoginService} from "../../../auth/service/login/login.service";
+import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 
 @Component({
   selector: 'app-posts',
@@ -15,18 +16,25 @@ import {LoginService} from "../../../auth/service/login/login.service";
     MatIcon,
     AsyncPipe,
     RouterLink,
-    MatFabButton
+    MatFabButton,
+    MatIconButton,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem
   ],
   templateUrl: './posts.component.html',
   styleUrl: './posts.component.scss',
   providers: [PostsStore]
 })
 export class PostsComponent implements OnInit, OnDestroy {
-  posts$ = this.postsStore.posts$;
-  pageNumber$ = this.postsStore.pageNumber$;
-  totalPages$ = this.postsStore.totalPages$;
-  username: string = this.activatedRoute.snapshot.params["username"];
-  reachBottom$ = fromEvent(window, 'Reached bottom')
+  postsSubscription: Subscription | undefined;
+  bottomSubscription: Subscription | undefined;
+  scrollSubscription: Subscription | undefined;
+  protected readonly posts$ = this.postsStore.posts$;
+  protected readonly pageNumber$ = this.postsStore.pageNumber$;
+  protected readonly totalPages$ = this.postsStore.totalPages$;
+  protected readonly username: string = this.activatedRoute.snapshot.params["username"];
+  protected readonly reachBottom$ = fromEvent(window, 'Reached bottom')
     .pipe(tap(ev => {
       console.log("Reached bottom event " + ev + this.pageNumber$())
       if (this.pageNumber$() < this.totalPages$()) {
@@ -35,10 +43,7 @@ export class PostsComponent implements OnInit, OnDestroy {
         this.bottomSubscription?.unsubscribe()
       }
     }));
-  postsSubscription: Subscription | undefined;
-  bottomSubscription: Subscription | undefined;
-  scrollSubscription: Subscription | undefined;
-  interval$ = interval(1000).pipe(
+  protected readonly interval$ = interval(1000).pipe(
     tap(time => {
       const div = document.querySelector("body")!;
       const verticalScroll = div.scrollHeight > div.clientHeight;
@@ -53,9 +58,8 @@ export class PostsComponent implements OnInit, OnDestroy {
 
   constructor(private readonly postsStore: PostsStore,
               private activatedRoute: ActivatedRoute,
-              protected readonly loginService:LoginService) {
+              protected readonly loginService: LoginService) {
     this.postsStore.getTotalPages(this.username);
-    // document.querySelector( ":hover" );
   }
 
   ngOnDestroy(): void {

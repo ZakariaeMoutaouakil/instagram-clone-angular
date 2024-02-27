@@ -4,13 +4,13 @@ import {
   MatDialogActions,
   MatDialogClose,
   MatDialogContent,
-  MatDialogRef, MatDialogTitle
+  MatDialogRef,
+  MatDialogTitle
 } from "@angular/material/dialog";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {FormsModule} from "@angular/forms";
 import {MatButton} from "@angular/material/button";
 import {MatInput} from "@angular/material/input";
-import {Comment} from "../store/post-state.store";
 
 @Component({
   selector: 'app-dialog',
@@ -32,8 +32,9 @@ import {Comment} from "../store/post-state.store";
 export class DialogComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {comment: string},
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: { comment: string },
+  ) {
+  }
 
   onNoClick(): void {
     this.dialogRef.close();

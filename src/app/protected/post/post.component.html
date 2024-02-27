@@ -14,10 +14,15 @@
                  mat-card-avatar
                  style="background-image: url('{{postState$().postInfo.photo}}'); background-size: cover;">
             </div>
-            <mat-card-title><a routerLink="/{{username}}"
-                               style="text-decoration: none; color: black; font-weight: bold">{{ username }}</a>
+            <mat-card-title>
+              <a routerLink="/{{username}}"
+                 style="text-decoration: none; color: black; font-weight: bold">
+                {{ username }}
+              </a>
             </mat-card-title>
-            <mat-card-subtitle>{{ postState$().postInfo.timeUntilNow.toString() }} days ago</mat-card-subtitle>
+            <mat-card-subtitle>
+              {{ postState$().postInfo.timeUntilNow.toString() }} days ago
+            </mat-card-subtitle>
           </mat-card-header>
         </mat-card>
       </div>
@@ -27,6 +32,11 @@
             <p>{{ postState$().postInfo.description }}</p>
             @for (hashtag of postState$().postInfo.hashtags; track $index) {
               <p style="color:blue;">#{{ hashtag }}</p>
+            }
+            @if (loginService.username() === username) {
+              <div style="margin-top: 5%">
+                <button mat-raised-button (click)="openPostDialog()">Edit</button>
+              </div>
             }
             <p style="color:gray; margin: 5% 0; text-align: center">Comments:</p>
             @if (postState$().comments.length === 0) {
@@ -63,7 +73,7 @@
                       <mat-icon>more_vert</mat-icon>
                     </button>
                     <mat-menu #menu="matMenu" xPosition="before">
-                      <button mat-menu-item (click)="openDialog(comment)">
+                      <button mat-menu-item (click)="openCommentDialog(comment)">
                         <mat-icon>edit</mat-icon>
                         <span>Edit</span>
                       </button>

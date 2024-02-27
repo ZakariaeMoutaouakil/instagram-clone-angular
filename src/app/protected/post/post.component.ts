@@ -81,7 +81,7 @@ export class PostComponent implements OnInit {
     this.postStore.getMetadata(this.postId)
   }
 
-  openDialog(comment: Comment): void {
+  openCommentDialog(comment: Comment): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       data: {comment: comment.comment}
     });
@@ -156,5 +156,9 @@ export class PostComponent implements OnInit {
     console.log(comment)
     this.postStore.deleteComments(comment.id)
     console.log(this.postState$())
+  }
+
+  openPostDialog() {
+
   }
 }
