@@ -20,6 +20,9 @@ export class CookieInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler) {
     const secureReq = request.clone({
       withCredentials: true, // Ensure cookies are sent with the request
+      headers: request.headers
+        .append('X-XSRF-TOKEN', this.loginService.csrf())
+        .append('X-Requested-With', 'XMLHttpRequest')
     })
 
     return next.handle(secureReq).pipe(
@@ -27,6 +30,11 @@ export class CookieInterceptor implements HttpInterceptor {
         if (event instanceof HttpResponse) {
           // Do something with the successful response
           console.log('HTTP response intercepted:', event)
+          // Access the XSRF-TOKEN cookie from the response headers
+          const csrfTokenCookie = this.getCookie('XSRF-TOKEN', event.headers);
+          this.loginService.csrf.set(csrfTokenCookie)
+          // Use the CSRF token cookie value as needed
+          console.log('CSRF Token Cookie:', csrfTokenCookie);
         }
       }),
       catchError((error: HttpErrorResponse) => {
@@ -41,6 +49,19 @@ export class CookieInterceptor implements HttpInterceptor {
         // You can throw a custom error message or do other error handling here
         return throwError(() => error)
       }))
+  }
+
+  // Function to extract a specific cookie value from the response headers
+  private getCookie(name: string, headers: any): string {
+    const cookies = headers.get('Set-Cookie');
+    console.log("cookies" + cookies)
+    if (!cookies) {
+      return '';
+    }
+
+    const cookie = cookies.split(';').find((cookie: string) => cookie.trim().startsWith(name));
+
+    return cookie ? cookie.split('=')[1] : '';
   }
 }
 
