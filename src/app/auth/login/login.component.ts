@@ -1,4 +1,4 @@
-import {Component, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, ViewEncapsulation} from '@angular/core';
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {NgOptimizedImage} from "@angular/common";
 import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
@@ -8,6 +8,7 @@ import {Router, RouterLink} from "@angular/router";
 import {MatButton} from "@angular/material/button";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {LoginService} from "../service/login/login.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -28,10 +29,11 @@ import {LoginService} from "../service/login/login.service";
   styleUrl: './login.component.scss',
   encapsulation: ViewEncapsulation.None
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   signIn: FormGroup
-  usernameFormControl: FormControl<string | null>;
-  passwordFormControl: FormControl<string | null>;
+  usernameFormControl: FormControl<string | null>
+  passwordFormControl: FormControl<string | null>
+  private loginSubscription: Subscription | undefined
 
   constructor(private readonly loginService: LoginService,
               private readonly _snackBar: MatSnackBar,
@@ -44,8 +46,12 @@ export class LoginComponent {
     })
   }
 
+  ngOnDestroy(): void {
+    this.loginSubscription?.unsubscribe()
+  }
+
   OnSubmit() {
-    this.loginService.login(this.signIn.value.username, this.signIn.value.password).subscribe({
+    this.loginSubscription = this.loginService.login(this.signIn.value.username, this.signIn.value.password).subscribe({
         next: username => {
           console.log(username)
           this.router.navigate(["/"])
