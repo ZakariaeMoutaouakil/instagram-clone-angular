@@ -19,7 +19,8 @@ export class CookieInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler) {
     const secureReq = request.clone({
-      withCredentials: true // Ensure cookies are sent with the request
+      withCredentials: true, // Ensure cookies are sent with the request
+      headers: request.headers.append('X-Requested-With', 'XMLHttpRequest')
     })
 
     return next.handle(secureReq).pipe(
