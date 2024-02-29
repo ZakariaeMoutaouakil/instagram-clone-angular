@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>Edit your profile:</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Username:</mat-label>
+    <input matInput [(ngModel)]="data.username">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Photo:</mat-label>
+    <input matInput [(ngModel)]="data.photo">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Email:</mat-label>
+    <input matInput [(ngModel)]="data.email">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Firstname:</mat-label>
+    <input matInput [(ngModel)]="data.firstname">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Lastname:</mat-label>
+    <input matInput [(ngModel)]="data.lastname">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Bio:</mat-label>
+    <input matInput [(ngModel)]="data.bio">
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Confirm</button>
+</mat-dialog-actions>

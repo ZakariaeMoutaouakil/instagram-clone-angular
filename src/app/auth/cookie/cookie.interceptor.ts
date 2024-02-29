@@ -33,7 +33,7 @@ export class CookieInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         // Handle HTTP errors (status codes 4xx and 5xx)
         console.error('HTTP error intercepted:', error)
-        if (error.status === 403) {
+        if (error.status === 401) {
           // Handle 404 Not Found error
           console.log('Resource not found:', error)
           console.log("logout")

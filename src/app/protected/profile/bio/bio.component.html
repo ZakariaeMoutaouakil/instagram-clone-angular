@@ -29,6 +29,13 @@
           <button (click)="follow()" mat-raised-button>
             {{ (personState$|async)!.info.follow ? 'Unfollow' : 'Follow' }}
           </button>
+        } @else {
+          <button (click)="updateUser()" mat-raised-button style="margin-right: 5%">
+            Edit
+          </button>
+          <button (click)="deleteUser()" mat-raised-button color="warn">
+            Delete
+          </button>
         }
         <!--        <button mat-raised-button>Message</button>-->
       </div>

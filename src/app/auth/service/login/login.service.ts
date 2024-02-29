@@ -13,12 +13,12 @@ export class LoginService {
   }
 
   preflight(): Observable<string> {
-    return this.httpClient.get<string>(environment.apiUrl + 'login')
+    return this.httpClient.get<string>(environment.apiUrl + 'test')
       .pipe(
         tap(username => {
-          console.log('preflight'+this.username())
+          console.log('preflight' + this.username())
           this.username.set(username)
-          console.log('preflight'+this.username())
+          console.log('preflight' + this.username())
         })
       )
   }
@@ -37,7 +37,7 @@ export class LoginService {
     )
   }
 
-  logout(){
+  logout() {
     this.username.set("")
   }
 

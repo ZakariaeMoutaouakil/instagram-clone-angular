@@ -50,7 +50,7 @@ export class RegisterComponent {
   }
 
   OnSubmit() {
-    this.httpClient.post(environment.apiUrl + 'register', this.signUp.value).subscribe(
+    this.httpClient.post(environment.apiUrl + 'persons/', this.signUp.value).subscribe(
       {
         next: () => {
           this._snackBar.open(
@@ -65,7 +65,7 @@ export class RegisterComponent {
           )
         },
         error: () => {
-          this._snackBar.open("Your authentification failed. Please retry with different credentials", "Retry")
+          this._snackBar.open("Your registration failed. Please retry with different credentials", "Retry")
         },
       }
     )

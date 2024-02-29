@@ -2,16 +2,16 @@
   <a routerLink="">
     <div class="logo">
       <img alt="instagram logo"
-           fill priority
-           ngSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo0kiQopQPHtpBkDU0kkSQ6YzAXiRCy_i0S0PzMAcG&s">
+           fill ngSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo0kiQopQPHtpBkDU0kkSQ6YzAXiRCy_i0S0PzMAcG&s"
+           priority>
     </div>
   </a>
   <button mat-flat-button routerLink="">
     <mat-icon>home</mat-icon>
     Home
   </button>
-  <button mat-flat-button>
-    <mat-icon>message</mat-icon>
-    Messages
+  <button [routerLink]="['/',loginService.username()]" mat-flat-button>
+    <mat-icon>account_circle</mat-icon>
+    Profile
   </button>
 </div>

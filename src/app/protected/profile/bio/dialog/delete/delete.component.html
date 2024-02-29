@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Please type the following phrase:</h2>
+<h3 mat-dialog-title style="color: gray">delete account</h3>
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Confirmation:</mat-label>
+    <input matInput [(ngModel)]="data.confirmation">
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Go Back</button>
+  <button mat-button [mat-dialog-close]="data.confirmation" cdkFocusInitial>Confirm</button>
+</mat-dialog-actions>
