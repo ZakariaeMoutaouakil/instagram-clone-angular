@@ -7,6 +7,7 @@ import {environment} from "../../../../environments/environment";
   providedIn: 'root'
 })
 export class LoginService {
+  csrf = signal<string>("")
   username = signal<string>("")
 
   constructor(private readonly httpClient: HttpClient) {
@@ -16,9 +17,9 @@ export class LoginService {
     return this.httpClient.get<string>(environment.apiUrl + 'login')
       .pipe(
         tap(username => {
-          console.log('preflight'+this.username())
+          console.log('preflight' + this.username())
           this.username.set(username)
-          console.log('preflight'+this.username())
+          console.log('preflight' + this.username())
         })
       )
   }
@@ -37,7 +38,7 @@ export class LoginService {
     )
   }
 
-  logout(){
+  logout() {
     this.username.set("")
   }
 
