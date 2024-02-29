@@ -21,8 +21,6 @@ export class CookieInterceptor implements HttpInterceptor {
     const secureReq = request.clone({
       withCredentials: true // Ensure cookies are sent with the request
     })
-    console.log("secureReq")
-    console.log(secureReq)
 
     return next.handle(secureReq).pipe(
       tap(event => {
