@@ -7,7 +7,6 @@ import {environment} from "../../../../environments/environment";
   providedIn: 'root'
 })
 export class LoginService {
-  csrf = signal<string>("")
   username = signal<string>("")
 
   constructor(private readonly httpClient: HttpClient) {
