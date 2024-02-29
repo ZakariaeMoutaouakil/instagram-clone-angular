@@ -1,5 +1,5 @@
-import {Component, OnDestroy, OnInit, signal, Signal} from '@angular/core';
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {Component, OnInit, signal, Signal} from '@angular/core';
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {NgOptimizedImage} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
 import {MatButton, MatFabButton, MatIconButton} from "@angular/material/button";
@@ -22,12 +22,11 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {HttpClient} from "@angular/common/http";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {environment} from "../../../environments/environment";
-import {Subscription, tap} from "rxjs";
+import {tap} from "rxjs";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {MatDialog} from "@angular/material/dialog";
-import {CommentDialogComponent} from "./dialog/comment/comment-dialog.component";
+import {DialogComponent} from "./dialog/dialog.component";
 import {LoginService} from "../../auth/service/login/login.service";
-import {PostDialogComponent} from "./dialog/post/post-dialog.component";
 
 @Component({
   selector: 'app-post',
@@ -62,7 +61,7 @@ import {PostDialogComponent} from "./dialog/post/post-dialog.component";
   styleUrl: './post.component.scss',
   providers: [PostStore]
 })
-export class PostComponent implements OnInit, OnDestroy {
+export class PostComponent implements OnInit {
   protected readonly postState$: Signal<PostState> = this.postStore.postState$
   protected readonly defaultPhoto = "https://img.freepik.com/free-photo/abstract-surface-textures-white-concrete-stone-wall_74190-8189.jpg?size=626&ext=jpg&ga=GA1.1.1448711260.1707048000&semt=sph"
   protected readonly addCommentLoadingEffect$ = signal<boolean>(false)
@@ -72,26 +71,18 @@ export class PostComponent implements OnInit, OnDestroy {
     Validators.maxLength(50)
   ])
   private readonly postId: number = +this.activatedRoute.snapshot.params["postId"]
-  private deletePostSubscription: Subscription | undefined
-  private updatePostSubscription: Subscription | undefined
 
   constructor(private readonly activatedRoute: ActivatedRoute,
               private readonly postStore: PostStore,
               private readonly _snackBar: MatSnackBar,
               private readonly httpClient: HttpClient,
               public dialog: MatDialog,
-              protected readonly loginService: LoginService,
-              private readonly router: Router) {
+              protected readonly loginService: LoginService) {
     this.postStore.getMetadata(this.postId)
   }
 
-  ngOnDestroy(): void {
-    this.deletePostSubscription?.unsubscribe()
-    this.updatePostSubscription?.unsubscribe()
-  }
-
   openCommentDialog(comment: Comment): void {
-    const dialogRef = this.dialog.open(CommentDialogComponent, {
+    const dialogRef = this.dialog.open(DialogComponent, {
       data: {comment: comment.comment}
     });
 
@@ -168,45 +159,6 @@ export class PostComponent implements OnInit, OnDestroy {
   }
 
   openPostDialog() {
-    const dialogRef = this.dialog.open(PostDialogComponent, {
-      data: {description: "", hashtags: "", image: ""},
-    })
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.updatePostSubscription = this.httpClient.put(environment.apiUrl + `posts/${this.postId}`, {
-        description: result.description,
-        hashtags: result.hashtags.split(","),
-        image: result.image
-      }).subscribe({
-        next: () => {
-          this.openSnackBar(
-            "Your post was successfully updated",
-            "Refresh",
-            () => location.reload()
-          )
-        },
-        error: _err => this._snackBar.open(
-          "An error occurred while trying to update your post",
-          "Retry"
-        )
-      })
-    })
-  }
-
-  deletePost() {
-    this.deletePostSubscription = this.httpClient
-      .delete(environment.apiUrl + 'posts/' + this.postId)
-      .subscribe({
-        next: res => {
-          console.log(res)
-          this.router.navigate([`/${this.username}`])
-            .catch(() => {
-              this.router.navigate(["/"]).catch(console.log)
-            })
-        },
-        error: () => {
-          this._snackBar.open("Your post couldn't be deleted", "Retry")
-        }
-      })
   }
 }

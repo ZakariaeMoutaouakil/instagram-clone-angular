@@ -9,30 +9,30 @@ import {
 } from "@angular/material/dialog";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {FormsModule} from "@angular/forms";
-import {MatInput} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
+import {MatInput} from "@angular/material/input";
 
 @Component({
-  selector: 'app-post-dialog',
+  selector: 'app-dialog',
   standalone: true,
   imports: [
     MatDialogContent,
     MatFormField,
-    MatDialogTitle,
-    FormsModule,
     MatDialogActions,
     MatDialogClose,
-    MatInput,
+    FormsModule,
+    MatDialogTitle,
     MatButton,
+    MatInput,
     MatLabel
   ],
-  templateUrl: './post-dialog.component.html',
-  styleUrl: './post-dialog.component.scss'
+  templateUrl: './dialog.component.html',
+  styleUrl: './dialog.component.scss'
 })
-export class PostDialogComponent {
+export class DialogComponent {
   constructor(
-    public dialogRef: MatDialogRef<PostDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { description: string, hashtags: string, image: string },
+    public dialogRef: MatDialogRef<DialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { comment: string },
   ) {
   }
 

@@ -7,11 +7,6 @@ import {fromEvent, interval, Subscription, tap} from "rxjs";
 import {MatFabButton, MatIconButton} from "@angular/material/button";
 import {LoginService} from "../../../auth/service/login/login.service";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
-import {MatDialog} from "@angular/material/dialog";
-import {environment} from "../../../../environments/environment";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {HttpClient} from "@angular/common/http";
-import {DialogComponent} from "./dialog/dialog.component";
 
 @Component({
   selector: 'app-posts',
@@ -32,13 +27,13 @@ import {DialogComponent} from "./dialog/dialog.component";
   providers: [PostsStore]
 })
 export class PostsComponent implements OnInit, OnDestroy {
-  postsSubscription: Subscription | undefined
-  bottomSubscription: Subscription | undefined
-  scrollSubscription: Subscription | undefined
-  protected readonly posts$ = this.postsStore.posts$
-  protected readonly pageNumber$ = this.postsStore.pageNumber$
-  protected readonly totalPages$ = this.postsStore.totalPages$
-  protected readonly username: string = this.activatedRoute.snapshot.params["username"]
+  postsSubscription: Subscription | undefined;
+  bottomSubscription: Subscription | undefined;
+  scrollSubscription: Subscription | undefined;
+  protected readonly posts$ = this.postsStore.posts$;
+  protected readonly pageNumber$ = this.postsStore.pageNumber$;
+  protected readonly totalPages$ = this.postsStore.totalPages$;
+  protected readonly username: string = this.activatedRoute.snapshot.params["username"];
   protected readonly reachBottom$ = fromEvent(window, 'Reached bottom')
     .pipe(tap(ev => {
       console.log("Reached bottom event " + ev + this.pageNumber$())
@@ -47,7 +42,7 @@ export class PostsComponent implements OnInit, OnDestroy {
       } else {
         this.bottomSubscription?.unsubscribe()
       }
-    }))
+    }));
   protected readonly interval$ = interval(1000).pipe(
     tap(time => {
       const div = document.querySelector("body")!;
@@ -59,15 +54,11 @@ export class PostsComponent implements OnInit, OnDestroy {
         console.log("scrollSubscription unsubscribed " + time)
       }
     })
-  )
-  private addPostSubscription: Subscription | undefined
+  );
 
   constructor(private readonly postsStore: PostsStore,
               private activatedRoute: ActivatedRoute,
-              protected readonly loginService: LoginService,
-              private readonly _snackBar: MatSnackBar,
-              private readonly httpClient: HttpClient,
-              public dialog: MatDialog) {
+              protected readonly loginService: LoginService) {
     this.postsStore.getTotalPages(this.username);
   }
 
@@ -75,7 +66,6 @@ export class PostsComponent implements OnInit, OnDestroy {
     this.postsSubscription?.unsubscribe()
     this.bottomSubscription?.unsubscribe()
     this.scrollSubscription?.unsubscribe()
-    this.addPostSubscription?.unsubscribe()
   }
 
   ngOnInit(): void {
@@ -88,42 +78,5 @@ export class PostsComponent implements OnInit, OnDestroy {
         window.dispatchEvent(new Event("Reached bottom"))
       }
     };
-  }
-
-  openSnackBar(message: string, action: string, callback: () => void) {
-    const snackBarRef = this._snackBar.open(message, action, {
-      duration: 5000,
-    });
-    snackBarRef.onAction().subscribe(() => {
-      if (callback) {
-        callback();
-      }
-    });
-  }
-
-  openDialog() {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      data: {description: "", hashtags: "", image: ""},
-    })
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.addPostSubscription = this.httpClient.post(environment.apiUrl + `posts/`, {
-        description: result.description,
-        hashtags: result.hashtags.split(","),
-        image: result.image
-      }).subscribe({
-        next: () => {
-          this.openSnackBar(
-            "Your post was successfully added",
-            "Refresh",
-            () => location.reload()
-          )
-        },
-        error: _err => this._snackBar.open(
-          "An error occurred while trying to update your post",
-          "Retry"
-        )
-      })
-    })
   }
 }
