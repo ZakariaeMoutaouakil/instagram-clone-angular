@@ -1,27 +1,48 @@
-# InstagramClone
+# Instagram Clone Project
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.8.
+This project is an Instagram clone developed using Spring Boot for the backend, Angular for the frontend, JWT for authentication, PostgreSQL for the database, and Docker for containerization.
 
-## Development server
+## What I learned in this project
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- **Spring Boot:** Used for building the backend RESTful API.
+- **NgRx:** A reactive programming library for Angular.
+- **JWT (JSON Web Tokens) + Spring Security:** Employed for user authentication and authorization.
+- **PostgreSQL:** Chosen as the relational database management system.
+- **Docker:** Utilized for containerizing the application and simplifying deployment.
+- **AWS Elastic Beanstalk:** Successfully deployed the application on a AWS service.
 
-## Code scaffolding
+## Features
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- User Authentication: Allows users to sign up, login, and logout securely using JWTs.
+- Post Creation: Users can create new posts with images and captions.
+- Post Interaction: Users can like, comment on, and share posts.
+- Profile Management: Users can edit their profile information and update their profile picture.
+- Follow/Unfollow: Users can follow and unfollow other users to see their posts in their feed.
 
-## Build
+## Prerequisites
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Before running the application, ensure you have the following installed:
 
-## Running unit tests
+- Java Development Kit (JDK)
+- Node.js and npm
+- Angular CLI
+- Docker
+- PostgreSQL
+- Apache Maven
+- Git
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Getting Started
 
-## Running end-to-end tests
+1. Clone the repository:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```bash
+git clone https://github.com/ZakariaeMoutaouakil/instagram-clone-angular.git
+cd instagram-clone
+```
 
-## Further help
+2. Frontend Setup:
+```bash
+npm install && ng serve
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+You can find the backend in this [repository](https://github.com/ZakariaeMoutaouakil/instagram-clone).
